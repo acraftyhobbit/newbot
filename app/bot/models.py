@@ -55,6 +55,7 @@ class Project(models.Model):
     patterns = models.ManyToManyField('Pattern', through='ProjectPattern', related_name='projects')
     tags = models.ManyToManyField('Tag', through='ProjectTag', related_name='projects')
     complete = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, db_index=True)
 
