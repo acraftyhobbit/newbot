@@ -1,0 +1,19 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/*
+app/.DS_Store
+app/app/__pycache__/celery.cpython-35.pyc
+app/bot/__pycache__/tasks.cpython-35.pyc
+app/bot/lib/__pycache__/
+app/bot/migrations/__pycache__/0001_initial.cpython-35.pyc
+app/bot/migrations/__pycache__/0002_auto_20171014_1719.cpython-35.pyc
+app/bot/tests/__pycache__/
+app/bot/tests/lib/__pycache__/
+app/bot/tests/lib/maker/__pycache__/
+app/bot/tests/lib/material/__pycache__/
+app/bot/tests/lib/pattern/__pycache__/
+app/bot/tests/lib/project/__pycache__/
+app/bot/tests/lib/project_status/__pycache__/
+app/bot/tests/tasks/__pycache__/
+app/common/__pycache__/
+app/common/file_management/__pycache__/
+app/common/file_management/file_types/__pycache__/

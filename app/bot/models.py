@@ -1,12 +1,26 @@
-import uuid
-
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
 class Maker(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, editable=False)
     sender_id = models.TextField(unique=True)
-    conversation_stage = models.ForeignKey('ConversationStage')
+    conversation_stage = models.ForeignKey('ConversationStage', null=True, default=None)
+    context = JSONField(default=dict)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
+class ConversationStage(models.Model):
+    id = models.UUIDField(primary_key=True)
+    name = models.CharField(max_length=64, editable=False)
+    conversation = models.ForeignKey('Conversation')
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class Conversation(models.Model):
+    id = models.UUIDField(primary_key=True)
+    name = models.CharField(max_length=64, editable=False)
     created = models.DateTimeField(auto_now_add=True)
 
 
@@ -27,7 +41,7 @@ class MakerProfile(models.Model):
 
 
 class DueDate(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='due_dates')
     date = models.DateField()
     created = models.DateTimeField(auto_now_add=True)
@@ -36,7 +50,7 @@ class DueDate(models.Model):
 class Project(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='projects')
-    name = models.TextField()
+    name = models.TextField(editable=False)
     materials = models.ManyToManyField('Material', through='ProjectMaterial', related_name='projects')
     patterns = models.ManyToManyField('Pattern', through='ProjectPattern', related_name='projects')
     tags = models.ManyToManyField('Tag', through='ProjectTag', related_name='projects')
@@ -58,7 +72,7 @@ class ProjectDueDate(models.Model):
 class Material(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='materials')
-    file = models.ForeignKey('File', related_name='materials')
+    files = models.ManyToManyField('File', through='MaterialFile', related_name='materials')
     tags = models.ManyToManyField('Tag', through='MaterialTag', related_name='materials')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, db_index=True)
@@ -67,25 +81,25 @@ class Material(models.Model):
 class Pattern(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='patterns')
-    file = models.ForeignKey('File', related_name='patterns')
+    files = models.ManyToManyField('File', through='PatternFile', related_name='patterns')
     tags = models.ManyToManyField('Tag', through='PatternTag', related_name='patterns')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, db_index=True)
 
 
-class ProjectUpdate(models.Model):
+class ProjectStatus(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    maker = models.ForeignKey('Maker', related_name='project_updates')
-    project = models.ForeignKey('Project', related_name='updates')
-    files = models.ManyToManyField('File', through='ProjectUpdateFile', related_name='project_updates')
-    tags = models.ManyToManyField('Tag', through='ProjectUpdateTag', related_name='project_updates')
+    maker = models.ForeignKey('Maker', related_name='project_statuses', null=True, default=None)
+    project = models.ForeignKey('Project', related_name='statuses')
+    files = models.ManyToManyField('File', through='ProjectStatusFile', related_name='project_statuses')
+    tags = models.ManyToManyField('Tag', through='ProjectStatusTag', related_name='project_statuses')
     complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
-class ProjectUpdateCompletion(models.Model):
-    project = models.OneToOneField(
-        "ProjectUpdate",
+class ProjectStatusCompletion(models.Model):
+    project_status = models.OneToOneField(
+        "ProjectStatus",
         on_delete=models.CASCADE,
         primary_key=True,
         related_name='completion'
@@ -113,10 +127,24 @@ class Tag(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-class ProjectUpdateFile(models.Model):
+class PatternFile(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     file = models.ForeignKey('File')
-    project_update = models.ForeignKey('ProjectUpdate')
+    pattern = models.ForeignKey('Pattern')
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
+
+class ProjectStatusFile(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False)
+    file = models.ForeignKey('File')
+    project_status = models.ForeignKey('ProjectStatus')
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
+
+class MaterialFile(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False)
+    file = models.ForeignKey('File')
+    material = models.ForeignKey('Material')
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
@@ -141,10 +169,10 @@ class ProjectTag(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-class ProjectUpdateTag(models.Model):
+class ProjectStatusTag(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     tag = models.ForeignKey('Tag')
-    project_update = models.ForeignKey('ProjectUpdate')
+    project_status = models.ForeignKey('ProjectStatus')
     created = models.DateTimeField(auto_now_add=True)
 
 
