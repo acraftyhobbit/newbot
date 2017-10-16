@@ -33,7 +33,7 @@ def update_messenger_profile(persistent_menu=None, get_started=None, greeting=No
         ).items() if v
     }
     r = requests.post(
-        url='https://graph.facebook.com/v2.6/me/messages?access_token={0}'.format(FACEBOOK_TOKEN),
+        url='https://graph.facebook.com/v2.6/me/messenger_profile?access_token={0}'.format(FACEBOOK_TOKEN),
         json=data
     )
     return r
