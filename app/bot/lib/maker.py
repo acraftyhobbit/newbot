@@ -15,8 +15,11 @@ def create_maker(sender_id):
     return maker, created
 
 
-def update_maker(sender_id, conversation_stage, models=None):
+def update_maker(sender_id, conversation, context=None):
     from bot.models import Maker
+    from bot.lib.conversation import get_conversation_stage_id
     maker = Maker.objects.get(id=get_maker_id(sender_id=sender_id))
-    if models:
-        pass
+    maker.conversation_stage_id = get_conversation_stage_id(conversation_name = conversation['name'], stage_name =conversation['stage'])
+    maker.context = context
+    maker.save()
+    return maker

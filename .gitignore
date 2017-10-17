@@ -17,3 +17,5 @@ app/bot/tests/tasks/__pycache__/
 app/common/__pycache__/
 app/common/file_management/__pycache__/
 app/common/file_management/file_types/__pycache__/
+deployment/keys.sh
+.vscode/*
