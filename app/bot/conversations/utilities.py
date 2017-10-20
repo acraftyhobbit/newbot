@@ -76,6 +76,7 @@ def handle_menu(sender_id, postback):
     
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation=dict(name="update_project_status", stage="select_project")
+        
         # TODO handle when a user has no unfinished projects
         message_text = "Please select a project"
     

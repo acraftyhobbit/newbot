@@ -22,7 +22,7 @@ def update_project_status(sender_id, project_status_id, file=None, tags=None, co
     from .maker import get_maker_id
 
     maker_id = get_maker_id(sender_id)
-    project_status = ProjectStatus.objects.get(id=project_status_id, maker_id=maker_id)
+    project_status = ProjectStatus.objects.prefetch_related('project__project_due_date__due_date').get(id=project_status_id, maker_id=maker_id)
 
     if file:
         add_file(obj=project_status, url=file['url'], file_type=file['file_type'])
