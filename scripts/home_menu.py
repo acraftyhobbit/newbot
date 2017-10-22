@@ -1,22 +1,20 @@
 from common.facebook import update_messenger_profile
 
-
-
-
 home_menu =[
   {
     "locale":"default",
-    "composer_input_disabled": True,
+    "composer_input_disabled": False,
     "call_to_actions":[
       {
             "title":"New Project",
             "type":"postback",
-            "payload":"ADD_PROJECT_PAYLOAD"
+            "payload":"ADD_PROJECT_PAYLOAD",
           },
        {
             "title":"Update Project",
             "type":"postback",
             "payload":"UPDATE_PROJECT_PAYLOAD"
+            
           }, 
       {
         "title":"Add Supplies",

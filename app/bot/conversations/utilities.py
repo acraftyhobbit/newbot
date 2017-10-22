@@ -19,9 +19,10 @@ def process_request(request):
             attachment_type = attachment[0].get("type")
             attachment_url = attachment[0].get("payload", dict()).get("url")
         postback = message.get('postback', dict()).get('payload')
+        print(postback)
         if postback in ["ADD_PROJECT_PAYLOAD", "UPDATE_PROJECT_PAYLOAD", "ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
             handle_menu(sender_id, postback)
-        elif postback == "START":
+        elif postback == "start":
             handle_start(sender_id)
         else:
             process_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type)
@@ -47,12 +48,13 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
     else:
         send_message(sender_id=sender_id, action='typing_on')
         response, context, next_conversation = conversation.respond(
-            maker=maker,
+            sender_id=sender_id,
             message_text=message_text,
             quick_reply=quick_reply,
             postback=postback,
             attachment_type=attachment_type,
-            attachment_url=attachment_url
+            attachment_url=attachment_url,
+            context=maker.context
         )
         send_message(
             sender_id=sender_id,
@@ -82,7 +84,7 @@ def handle_menu(sender_id, postback):
     
     elif postback in ["ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         conversation=dict(name="create_supplies", stage="add_image")
-        context=dict(type = postback.replace.split("_")[1].lower())
+        context=dict(type = postback.split("_")[1].lower())
         message_text = "Awesome! Please take a photo of the {0} to get started".format(context['type'])
     
     update_maker(sender_id=sender_id, conversation=conversation, context=context)

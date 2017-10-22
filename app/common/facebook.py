@@ -10,7 +10,7 @@ def send_message(sender_id, text=None, attachment=None, quick_replies=None, butt
     if text or attachment:
         data['message'] = {k: v for k, v in
                            dict(text=text, attachment=attachment, quick_replies=quick_replies, metadata=metadata,
-                                buttons=buttons) if v}
+                                buttons=buttons).items() if v}
     elif action in ['typing_on', 'typing_off', 'mark_seen']:
         data['sender_action'] = action
 

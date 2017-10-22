@@ -5,11 +5,15 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     
     if message_text:
         tags = [i.strip() for i in message_text.split('#')]
-
+    file = None
+    if attachment_url and attachment_type:
+        file = dict(url=attachment_url, file_type=attachment_type)
+    
     if context['type'] == 'material':
-        supply = update_material(sender_id=sender_id, material_id=context['material_id'], file=dict(url=attachment_url, file_type=attachment_type), tags=tags)
+        supply = update_material(sender_id=sender_id, material_id=context['material_id'], file=file, tags=tags)
+    
     else:
-        supply = update_pattern(sender_id=sender_id, pattern_id=context['pattern_id'], file=dict(url=attachment_url, file_type=attachment_type), tags=tags)
+        supply = update_pattern(sender_id=sender_id, pattern_id=context['pattern_id'], file=file, tags=tags)
     
     new_context = {'type':context['type'], '{0}_id'.format(context['type']) : str(supply.id)}
     
