@@ -1,3 +1,9 @@
+def load_conversation(conversation_name, stage_name):
+    import importlib
+    conversation = importlib.import_module("bot.conversations.{0}.{1}".format(conversation_name, stage_name))
+    return conversation
+
+
 def get_conversation_id(name):
     from common.utilities import generate_unique_key
     key = generate_unique_key(name)

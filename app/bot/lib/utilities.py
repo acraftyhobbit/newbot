@@ -68,7 +68,7 @@ def add_file(obj, url, file_type):
 def add_tags(obj, tags: list):
     from common.utilities import generate_unique_key
     tag_objects = list()
-    for tag in tags:
+    for tag in [i for i in tags if isinstance(i, str) and i.strip()]:
         tag = tag.strip()
         tag_object = create_tag(tag=tag)
         tag_objects.append(tag_object)
