@@ -38,17 +38,18 @@ class HowCompleteTestCase(TestCase):
             url=self.update_url,
             file_type=self.update_type
         )
+
     def test_how_complete(self):
         from bot.conversations.update_project_status import how_complete
         from bot.models import ProjectStatusCompletion
 
         response, new_context, conversation = how_complete.respond(
-            sender_id=self.sender_id, 
-            message_text='80', 
-            attachment_type=None, 
-            attachment_url=None, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text='80',
+            attachment_type=None,
+            attachment_url=None,
+            postback=None,
+            quick_reply=None,
             context=dict(project_status_id=str(self.project_status.id))
-            )
+        )
         self.assertEqual(ProjectStatusCompletion.objects.get(project_status=self.project_status).percentage, 80)

@@ -2,19 +2,6 @@ from celery import shared_task
 
 
 @shared_task()
-def download_file(url):
-    import requests
-    from bot.models import File
-    from common.file_management import store_file
-    from common.utilities import generate_unique_key
-    response = requests.get(url=url)
-    file_id = generate_unique_key(url)
-    store_file(key='user/{0}.jpg'.format(str(file_id).replace('-', '/')), obj=response.content)
-    file = File.objects.filter(id=file_id).update(downloaded=True)
-    return str(file.id)
-
-
-@shared_task()
 def get_maker_profile(sender_id):
     from app.settings import FACEBOOK_TOKEN
     from bot.models import MakerProfile
@@ -45,3 +32,4 @@ def get_maker_profile(sender_id):
         )
     )
     return sender_id
+

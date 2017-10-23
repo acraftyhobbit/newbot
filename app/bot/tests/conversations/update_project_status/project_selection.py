@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 class SelectProjectTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
@@ -31,8 +32,16 @@ class SelectProjectTestCase(TestCase):
             pattern_id=str(self.pattern.id),
             tags=self.tags
         )
+
     def test_select_project(self):
         from bot.conversations.update_project_status import project_selection
 
-        response, new_context, conversation = project_selection.respond(sender_id=self.sender_id, message_text=None, attachment_type=None, attachment_url=None, postback=str(self.project.id), quick_reply=None, context=None)
+        response, new_context, conversation = project_selection.respond(
+            sender_id=self.sender_id,
+            message_text=None,
+            attachment_type=None,
+            attachment_url=None,
+            postback=str(self.project.id),
+            quick_reply=None,
+            context=None)
         self.assertEqual(new_context["project_id"], str(self.project.id))

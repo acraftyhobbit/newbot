@@ -7,7 +7,6 @@ class AddImageTestCase(TestCase):
         from bot.lib.project import create_project, update_project
         from bot.lib.material import create_material
         from bot.lib.pattern import create_pattern
-        from bot.lib.project_status import create_project_status
         self.sender_id = '1'
         self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
         self.pattern_type = 'image'
@@ -38,12 +37,12 @@ class AddImageTestCase(TestCase):
         from bot.models import ProjectStatus
 
         response, new_context, conversation = add_image.respond(
-            sender_id=self.sender_id, 
-            message_text=None, 
-            attachment_type=self.update_type, 
-            attachment_url=self.update_url, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text=None,
+            attachment_type=self.update_type,
+            attachment_url=self.update_url,
+            postback=None,
+            quick_reply=None,
             context=dict(project_id=str(self.project.id))
-            )
+        )
         self.assertEqual(ProjectStatus.objects.filter(project_id=self.project.id).count(), 1)

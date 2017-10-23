@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 
-class AddSupplyContextMaterialTestCase(TestCase):
+class AddMaterialSupplyContextTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
         from bot.lib.material import create_material
@@ -17,38 +17,35 @@ class AddSupplyContextMaterialTestCase(TestCase):
 
     def test_add_tags_material(self):
         from bot.conversations.create_supplies import add_context
-        from bot.lib.conversation import get_conversation_stage_id
-        from bot.models import Maker, Material
+        from bot.models import Material
         response, new_context, conversation = add_context.respond(
-            sender_id=self.sender_id, 
-            message_text='#dogs #pugs', 
-            attachment_type=None, 
-            attachment_url=None, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text='#dogs #pugs',
+            attachment_type=None,
+            attachment_url=None,
+            postback=None,
+            quick_reply=None,
             context=dict(type='material', material_id=self.material_id)
         )
         self.assertDictEqual(conversation, dict(name='menu', stage='menu'))
         self.assertEqual(Material.objects.get(id=self.material_id).tags.all().count(), 2)
-    
+
     def test_add_image_material(self):
-        from bot.models import Maker, Material
+        from bot.models import Material
         from bot.conversations.create_supplies import add_context
         response, new_context, conversation = add_context.respond(
-            sender_id=self.sender_id, 
-            message_text=None, 
-            attachment_type=self.material_type, 
-            attachment_url=self.material_url_2, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text=None,
+            attachment_type=self.material_type,
+            attachment_url=self.material_url_2,
+            postback=None,
+            quick_reply=None,
             context=dict(type='material', material_id=self.material_id)
         )
         self.assertEqual(Material.objects.get(id=self.material_id).files.all().count(), 2)
 
-from django.test import TestCase
 
-
-class AddSupplyContextPatternTestCase(TestCase):
+class AddPatternContextTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
         from bot.lib.pattern import create_pattern
@@ -64,30 +61,75 @@ class AddSupplyContextPatternTestCase(TestCase):
 
     def test_add_tags_material(self):
         from bot.conversations.create_supplies import add_context
-        from bot.lib.conversation import get_conversation_stage_id
-        from bot.models import Maker, Pattern
+        from bot.models import Pattern
         response, new_context, conversation = add_context.respond(
-            sender_id=self.sender_id, 
-            message_text='#dogs #pugs', 
-            attachment_type=None, 
-            attachment_url=None, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text='#dogs #pugs',
+            attachment_type=None,
+            attachment_url=None,
+            postback=None,
+            quick_reply=None,
             context=dict(type='pattern', pattern_id=self.pattern_id)
         )
         self.assertDictEqual(conversation, dict(name='menu', stage='menu'))
         self.assertEqual(Pattern.objects.get(id=self.pattern_id).tags.all().count(), 2)
-    
+
     def test_add_image_material(self):
-        from bot.models import Maker, Pattern
+        from bot.models import Pattern
         from bot.conversations.create_supplies import add_context
         response, new_context, conversation = add_context.respond(
-            sender_id=self.sender_id, 
-            message_text=None, 
-            attachment_type=self.pattern_type, 
-            attachment_url=self.pattern_url_2, 
-            postback=None, 
-            quick_reply=None, 
+            sender_id=self.sender_id,
+            message_text=None,
+            attachment_type=self.pattern_type,
+            attachment_url=self.pattern_url_2,
+            postback=None,
+            quick_reply=None,
             context=dict(type='pattern', pattern_id=self.pattern_id)
         )
         self.assertEqual(Pattern.objects.get(id=self.pattern_id).files.all().count(), 2)
+
+
+class ValidateAddContextTestCase(TestCase):
+    def test_empty_message(self):
+        from bot.conversations.create_supplies.add_context import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_video(self):
+        from bot.conversations.create_supplies.add_context import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='video',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_valid_tags(self):
+        from bot.conversations.create_supplies.add_context import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='#pugs #dogs',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertTrue(valid)
+
+    def test_valid_file(self):
+        from bot.conversations.create_supplies.add_context import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='image',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertTrue(valid)

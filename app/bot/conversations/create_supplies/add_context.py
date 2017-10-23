@@ -26,7 +26,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     return response, new_context, conversation
 
 
-def validate(message_text, attachment_type, postback, quick_reply):
+def validate(sender_id, message_text, attachment_type, postback, quick_reply):
     if attachment_type in ['image'] or message_text:
         return True, dict()
     else:
