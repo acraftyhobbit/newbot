@@ -20,7 +20,7 @@ def send_message(sender_id, text=None, attachment=None, quick_replies=None, butt
     return r
 
 
-def update_messenger_profile(persistent_menu=None, get_started=None, greeting=None, home_url=None):
+def update_messenger_profile(persistent_menu=None, get_started=None, greeting=None, home_url=None, whitelisted_domains=None):
     from app.settings import FACEBOOK_TOKEN
     import requests
     data = {
@@ -29,7 +29,8 @@ def update_messenger_profile(persistent_menu=None, get_started=None, greeting=No
             persistent_menu=persistent_menu,
             get_started=get_started,
             greeting=greeting,
-            home_url=home_url
+            home_url=home_url,
+            whitelisted_domains=whitelisted_domains
         ).items() if v
     }
     r = requests.post(
@@ -37,3 +38,4 @@ def update_messenger_profile(persistent_menu=None, get_started=None, greeting=No
         json=data
     )
     return r
+    

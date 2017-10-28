@@ -11,7 +11,7 @@ BUCKETS = dict(
 )
 
 S3_REGION = os.environ.get('S3_REGION', 'us-east-1')
-
+DOMAIN = os.environ.get('DOMAIN', 'https://9b8fb740.ngrok.io')
 DATABASES = dict(
     default=dict(
         ENGINE=os.environ.get('CRAFTY_DB_ENGINE', "django.db.backends.postgresql"),

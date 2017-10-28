@@ -1,6 +1,5 @@
 from celery import shared_task
 
-
 @shared_task()
 def route_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type):
     if isinstance(postback, str) and postback.upper() in ["ADD_PROJECT_PAYLOAD", "UPDATE_PROJECT_PAYLOAD",
@@ -36,6 +35,7 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
             sender_id=sender_id,
             text=failure_response.get('message_text'),
             buttons=failure_response.get('buttons'),
+            attachment=failure_response.get('attachment'),
             quick_replies=failure_response.get('quick_replies')
         )
     else:
@@ -49,22 +49,26 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
             attachment_url=attachment_url,
             context=maker.context
         )
-        send_message(
+        r = send_message(
             sender_id=sender_id,
             text=response.get('message_text'),
             buttons=response.get('buttons'),
+            attachment=response.get('attachment'),
             quick_replies=response.get('quick_replies')
         )
+        print(r.content)
         update_maker(sender_id=sender_id, context=context, conversation=next_conversation)
     return valid
 
 
 def process_menu_selection(sender_id, postback):
-    from bot.lib.maker import update_maker
+    from bot.lib.maker import update_maker, get_maker_id
     from common.facebook import send_message
+    from bot.models import Project
     context = dict()
     message_text = None
     conversation = dict()
+    attachment = None
     if postback == "ADD_PROJECT_PAYLOAD":
         conversation = dict(name="create_project", stage="name_project")
         # TODO handle when a user has too many projects
@@ -72,9 +76,11 @@ def process_menu_selection(sender_id, postback):
 
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation = dict(name="update_project_status", stage="project_selection")
-
-        # TODO handle when a user has no unfinished projects
-        message_text = "Please select a project"
+        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=True)
+        if projects.count() > 0:
+            attachment = format_project_carousel(projects=projects)
+        else:
+            message_text = "It looks like you don't have any active projects. Add a project to get started!"
 
     elif postback in ["ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         conversation = dict(name="create_supplies", stage="add_image")
@@ -82,7 +88,7 @@ def process_menu_selection(sender_id, postback):
         message_text = "Awesome! Please take a photo of the {0} to get started".format(context['type'])
 
     update_maker(sender_id=sender_id, conversation=conversation, context=context)
-    send_message(sender_id=sender_id, text=message_text)
+    send_message(sender_id=sender_id, text=message_text, attachment=attachment)
 
 
 def welcome_new_user(sender_id):
@@ -90,3 +96,35 @@ def welcome_new_user(sender_id):
     from common.facebook import send_message
     create_maker(sender_id=sender_id)
     send_message(sender_id=sender_id, text="Welcome to CraftyBot select from menu to get started")
+
+
+def format_project_carousel(projects):
+    from common.utilities import get_file_url
+    carousel = {
+            "type":"template",
+            "payload":{
+            "template_type":"generic",
+            "elements":[]
+        }
+    }
+    for project in projects[0:10]:
+        element = {
+            "title": project.name,
+            "subtitle": " ".join(["#{0}".format(tag.name) for tag in project.tags.all()]),
+            "image_url": get_file_url(project.materials.first().files.first()),
+            "buttons": [
+                {
+                    "title": "Select",
+                    "type": "postback",
+                    "payload": str(project.id)
+                }
+            ]
+        }
+        if len(element['subtitle'])> 30:
+            element.pop('subtitle')
+        if len(element['title'])> 30:
+            element['title'] = element['title'][:30] + '...'
+        carousel['payload']['elements'].append(
+            element
+        )
+    return carousel

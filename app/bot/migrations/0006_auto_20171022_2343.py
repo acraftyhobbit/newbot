@@ -9,7 +9,8 @@ def forwards_func(apps, schema_editor):
     from bot.lib.conversation import create_conversation, create_conversation_stage
 
     conversations = dict(
-        create_project=['name_project']
+        create_project=['name_project','pattern_menu', 'add_pattern', 'select_pattern', 'material_menu', 'add_material','select_material','add_due_date','add_tags'],
+        create_supplies=['add_tags'],
     )
     for name, stages in conversations.items():
         conversation = create_conversation(name=name)
