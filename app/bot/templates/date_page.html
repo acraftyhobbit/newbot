@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+  <style>
+      #button {
+          background-color:#006eff;
+          color: white;
+          border-radius: 15px;
+      }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+
+<body>
+  <script>(
+    function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'Messenger'));
+  </script>
+    <form>
+        Due Date:
+        <input type="date" name="duedate">
+        <input id="button" class="due-date" type="submit">
+      </form>
+      <script>
+          $(function () { // this is the jquery shortcut for document.ready()
+            function addToProjects(evt) {
+              evt.preventDefault();  
+              var url = new URL(window.location)
+                $.post(
+                    '/bot/post_date',
+                    {
+                        date : document.getElementsByName('duedate')[0].value,
+                        sender_id : url.searchParams.get('sender_id')
+                    },
+                    addToProjectsSuccess
+                );
+            }
+            function addToProjectsSuccess(result) {
+                console.log(result.status);
+                MessengerExtensions.requestCloseBrowser();
+            }
+            $('#button').click(addToProjects);    
+        });
+      </script>
+</body>
+</html>

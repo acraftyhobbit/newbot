@@ -21,3 +21,13 @@ def create_unique_hash(attributes):
     hashed = hashlib.md5()
     hashed.update(json.dumps(attributes, sort_keys=True).encode('utf-8'))
     return uuid.UUID(str(hashed.hexdigest()))
+
+
+def get_file_url(file):
+    from common.file_management.s3 import get_bucket
+    if file.downloaded:
+        key = '{0}.jpg'.format(str(file.id).replace('-', '/'))
+        bucket, key = get_bucket(key=key)
+        return 'https://s3.amazonaws.com/{0}/{1}'.format(bucket, key)
+    else:
+        return file.url

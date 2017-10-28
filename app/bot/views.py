@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
-# TODO fix this in production
+from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 
 @csrf_exempt
@@ -35,3 +36,22 @@ def process_request(request):
             attachment_url = attachment[0].get("payload", dict()).get("url")
         postback = message.get('postback', dict()).get('payload')
         route_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type)
+
+@xframe_options_exempt
+def add_date(request):
+    return render(request,'date_page.html')
+
+@csrf_exempt
+@xframe_options_exempt
+def post_date(request):
+    from .tasks import route_message
+    from django.http import HttpResponse
+    route_message(
+        sender_id=request.POST.get('sender_id'),
+        message_text=request.POST.get('date'),
+        quick_reply=None,
+        postback=None,
+        attachment_url=None, 
+        attachment_type=None
+    )
+    return HttpResponse('OK')
