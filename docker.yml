@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y python-pip
+      - pip install --upgrade pip
+      - pip install awscli
+      - aws configure set s3.signature_version s3v4
+      - aws s3 cp s3://forge-keys/docker.sh deployment/keys/docker.sh
+      - echo "success"
+  build:
+    commands:
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+      - docker build -t $IMAGE_REPO_NAME:latest .
+      - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+  post_build:
+    commands:
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - echo Build completed on `date`
+      - echo "complete"
