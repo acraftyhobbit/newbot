@@ -1,11 +1,11 @@
 from django.test import TestCase
 
-class ValidateAddMaterialCreateProjectTestCase(TestCase):
+class ValidateAddPatterCreateProjectConversationTestCase(TestCase):
     def setUp(self):
         pass
 
     def test_image(self):
-        from bot.conversations.create_project.add_material import validate
+        from bot.conversations.create_project.add_pattern import validate
         valid, message = validate(
             sender_id='1',
             message_text=None,
@@ -16,7 +16,7 @@ class ValidateAddMaterialCreateProjectTestCase(TestCase):
         self.assertTrue(valid)
 
     def test_add_video(self):
-        from bot.conversations.create_project.add_material import validate
+        from bot.conversations.create_project.add_pattern import validate
         valid, message = validate(
             sender_id='1',
             message_text=None,
@@ -27,7 +27,7 @@ class ValidateAddMaterialCreateProjectTestCase(TestCase):
         self.assertFalse(valid)
 
     def test_add_string(self):
-        from bot.conversations.create_project.add_material import validate
+        from bot.conversations.create_project.add_pattern import validate
         valid, message = validate(
             sender_id='1',
             message_text='this should fail',

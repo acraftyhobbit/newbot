@@ -4,7 +4,7 @@ class CreateSuppliesTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
         from bot.tasks import route_message
-        self.sender_id = '1'
+        self.sender_id = '108886223055545'
         create_maker(sender_id=self.sender_id)
 
     def test_create_pattern(self):

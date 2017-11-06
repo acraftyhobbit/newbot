@@ -2,7 +2,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     from bot.lib.project_status import update_project_status
 
     completion_percentage = int(message_text.strip())
-    new_context = None
+    new_context = dict()
     project_status = update_project_status(sender_id=sender_id, project_status_id=context['project_status_id'], completion_percentage=completion_percentage)
 
     if completion_percentage == 100:

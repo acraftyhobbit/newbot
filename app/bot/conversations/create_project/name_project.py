@@ -1,8 +1,11 @@
 def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
+    from bot.lib.maker import get_maker_id
     from bot.lib.project import create_project
+    from bot.models import Pattern
     
     project, created = create_project(sender_id=sender_id, name=message_text)
     new_context = dict()
+    
     if created:
         new_context = dict(project_id=str(project.id))
         response = dict(
@@ -12,14 +15,15 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
                     "content_type":"text",
                     "title":"New Pattern",
                     "payload":"ADD_PATTERN",
-                },
+                }])
+        if Pattern.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).count() > 0:
+            response['quick_replies'].append(
                 {
-                    "content_type":"text",
-                    "title":"Select Pattern",
-                    "payload":"SELECT_PATTERN",
-                },
-            ]
-        )
+                    "content_type": "text",
+                    "title": "Select Material",
+                    "payload": "SELECT_MATERIAL",
+                }
+            )
         conversation = dict(name='create_project', stage='pattern_menu')
     else:
         response = dict(message_text = "It looks like you already have a project called {0}. What would you like to call this project?".format(message_text))
