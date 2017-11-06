@@ -13,4 +13,5 @@ phases:
       - pip install -q -r requirements.txt
   build:
     commands:
-      - python app/manage.py test
+      - cd app
+      - python manage.py test

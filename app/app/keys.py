@@ -5,14 +5,14 @@ ENVIRONMENT = os.environ.get("ENVIRONMENT", 'local')
 
 if os.environ.get('ENCRYPTED_FACEBOOK_TOKEN'):
     FACEBOOK_TOKEN = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ.get('ENCRYPTED_FACEBOOK_TOKEN'))
+        CiphertextBlob=os.environ.get('ENCRYPTED_FACEBOOK_TOKEN')
     )['Plaintext'].decode('utf-8')
 else:
     FACEBOOK_TOKEN = os.environ.get('FACEBOOK_TOKEN')
 
 if os.environ.get('ENCRYPTED_DJANGO_SECRET_KEY'):
     SECRET_KEY = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ.get('ENCRYPTED_DJANGO_SECRET_KEY'))
+        CiphertextBlob=os.environ.get('ENCRYPTED_DJANGO_SECRET_KEY')
     )['Plaintext'].decode('utf-8')
 else:
     SECRET_KEY = 'kzv$s=4j$y5hkx4$9kai799(kf$ac^rix=t_0b149*wx!iit+t'
@@ -23,21 +23,15 @@ BUCKETS = dict(
 )
 
 S3_REGION = os.environ.get('S3_REGION', 'us-east-1')
-DOMAIN = os.environ.get('DOMAIN', 'https://9b8fb740.ngrok.io')
+DOMAIN = os.environ.get('DOMAIN', 'https://acraftybot.com')
 
 if os.environ.get('ENCRYPTED_CRAFTY_DB_PASSWORD'):
     DB_PASSWORD = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ.get('ENCRYPTED_CRAFTY_DB_PASSWORD'))
+        CiphertextBlob=os.environ.get('ENCRYPTED_CRAFTY_DB_PASSWORD')
     )['Plaintext'].decode('utf-8')
 else:
     DB_PASSWORD = 'test'
-
-if os.environ.get('ENCRYPTED_CRAFTY_DB_USER'):
-    DB_USER = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ.get('ENCRYPTED_CRAFTY_DB_USER'))
-    )['Plaintext'].decode('utf-8')
-else:
-    DB_USER = 'test'
+DB_USER = os.environ.get('CRAFTY_DB_USER', 'test')
 
 DATABASES = dict(
     default=dict(
