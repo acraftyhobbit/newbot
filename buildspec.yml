@@ -11,6 +11,12 @@ phases:
       - . env/bin/activate
       - pip install --upgrade pip
       - pip install -q -r requirements.txt
+  pre_build:
+    commands:
+      - supervisord
+      - supervisorctl
+      - supervisorctl reread
+      - supervisorctl update
   build:
     commands:
       - cd app
