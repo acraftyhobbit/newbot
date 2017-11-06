@@ -13,10 +13,7 @@ phases:
       - pip install -q -r requirements.txt
   pre_build:
     commands:
-      - supervisord
-      - supervisorctl
-      - supervisorctl reread
-      - supervisorctl update
+      - service postgresql start
   build:
     commands:
       - cd app
