@@ -46,3 +46,40 @@ class AddImageTestCase(TestCase):
             context=dict(project_id=str(self.project.id))
         )
         self.assertEqual(ProjectStatus.objects.filter(project_id=self.project.id).count(), 1)
+        
+class ValidateAddImageUpdateConversationTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_image(self):
+        from bot.conversations.update_project_status.add_image import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='image',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertTrue(valid)
+
+    def test_add_video(self):
+        from bot.conversations.update_project_status.add_image import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='video',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_add_string(self):
+        from bot.conversations.update_project_status.add_image import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='this should fail',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)

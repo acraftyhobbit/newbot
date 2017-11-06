@@ -4,10 +4,8 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     from bot.lib.maker import get_maker_id
     from .utilities import format_supply_carousel
     supply_type = 'pattern'
-    if 'pattern' in quick_reply.lower() or 'pattern' in message_text.lower():
-        supply_type = 'pattern'
     action = 'add'
-    if 'select' in quick_reply.lower() or 'select' in message_text.lower():
+    if (quick_reply and 'select' in quick_reply.lower()) or (message_text and 'select' in message_text.lower()):
         action = 'select'
 
     conversation = dict(name='create_project', stage='{0}_{1}'.format(action, supply_type))
@@ -28,9 +26,10 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
 
 def validate(sender_id, message_text, attachment_type, postback, quick_reply):
     # TODO what if they screw up here?
-    if quick_reply.lower() in ['add_pattern', 'select_pattern']:
+
+    if quick_reply and quick_reply.lower() in ['add_pattern', 'select_pattern']:
         return True, dict()
-    elif ('add' in message_text.lower() or 'select' in message_text.lower()) and 'pattern' in message_text.lower():
+    elif message_text and ('add' in message_text.lower() or 'select' in message_text.lower()) and 'pattern' in message_text.lower():
         return True, dict()
     else:
         return False, dict(message_text="I'm sorry, did you want to add a new pattern or select an existing one?", quick_replies=[

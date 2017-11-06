@@ -1,18 +1,54 @@
-def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
-    from bot.lib.project import update_project
+from django.test import TestCase
+
+class ValidateSelectMaterialCreateProjectTestCase(TestCase):
+    def setUp(self):
+        from bot.lib.material import create_material
+        from bot.lib.maker import create_maker
+        maker, created = create_maker(sender_id='1')
+        material = create_material(sender_id=maker.sender_id, url="testing.com/image", file_type='image')
+        material_2 = create_material(sender_id=maker.sender_id, url='testing.com/image_2', file_type='image')
+        self.material = material
     
-    update_project(sender_id=sender_id, project_id=context["project_id"], material_id=postback)
-    conversation = dict(name='create_project', stage='add_due_date')
-    response = dict(message_text = "Awesome! That's all I need. When do you want to finish this project by")
-    new_context = context
-    # TODO Nees to determine if we can somehow create a date picker
-    return response, new_context, conversation
+    def test_empty_message(self):
+        from bot.conversations.create_project.select_material import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
 
+    def test_image(self):
+        from bot.conversations.create_project.select_material import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='image',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
 
+    def test_valid_project(self):
+        from bot.conversations.create_project.select_material import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=str(self.material.id),
+            quick_reply=None
+        )
+        self.assertTrue(valid)
 
-def validate(sender_id, message_text, attachment_type, postback, quick_reply):
-    if postback:
-        return True, dict(message_text='')
-    else:
-        return False, dict(message_text='Please select from the menu.')
-    #TODO probably need to see what happen with other things here
+    def test_text(self):
+        from bot.conversations.create_project.select_material import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='hello',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)

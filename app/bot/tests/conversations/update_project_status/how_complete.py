@@ -53,3 +53,48 @@ class HowCompleteTestCase(TestCase):
             context=dict(project_status_id=str(self.project_status.id))
         )
         self.assertEqual(ProjectStatusCompletion.objects.get(project_status=self.project_status).percentage, 80)
+
+class ValidateHowCompleteTestCase(TestCase):
+    def test_empty_message(self):
+        from bot.conversations.update_project_status.how_complete import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_image(self):
+        from bot.conversations.update_project_status.how_complete import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='image',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_valid_number(self):
+        from bot.conversations.update_project_status.how_complete import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='25',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertTrue(valid)
+
+    def test_valid_file(self):
+        from bot.conversations.update_project_status.how_complete import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='hello',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)

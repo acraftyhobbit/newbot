@@ -41,6 +41,9 @@ def add_completion_percentage(project_status, completion_percentage):
         project_status=project_status,
         defaults=dict(percentage=completion_percentage)
     )
+    if completion_percentage >= 100:
+        project_status.project.finished = True
+        project_status.project.save()
     project_status.complete = True
     project_status.save()
     return project_status

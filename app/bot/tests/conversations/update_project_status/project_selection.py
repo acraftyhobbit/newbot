@@ -45,3 +45,56 @@ class SelectProjectTestCase(TestCase):
             quick_reply=None,
             context=None)
         self.assertEqual(new_context["project_id"], str(self.project.id))
+
+class ValidateProjectSelectionTestCase(TestCase):
+    def setUp(self):
+        from bot.lib.project import create_project
+        from bot.lib.maker import create_maker
+        maker, created = create_maker(sender_id='1')
+        project, created = create_project(sender_id=maker.sender_id, name='Test_project')
+        project_2, created = create_project(sender_id=maker.sender_id, name='Test_project_2')
+        self.project = project
+    
+    def test_empty_message(self):
+        from bot.conversations.update_project_status.project_selection import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_image(self):
+        from bot.conversations.update_project_status.project_selection import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type='image',
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)
+
+    def test_valid_project(self):
+        from bot.conversations.update_project_status.project_selection import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text=None,
+            attachment_type=None,
+            postback=str(self.project.id),
+            quick_reply=None
+        )
+        self.assertTrue(valid)
+
+    def test_valid_file(self):
+        from bot.conversations.update_project_status.project_selection import validate
+        valid, message = validate(
+            sender_id='1',
+            message_text='hello',
+            attachment_type=None,
+            postback=None,
+            quick_reply=None
+        )
+        self.assertFalse(valid)

@@ -37,6 +37,11 @@ def process_request(request):
         postback = message.get('postback', dict()).get('payload')
         route_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type)
 
+def health_check(request):
+    """Heath check needed for https validations"""
+    from django.http import HttpResponse
+    return HttpResponse('OK')
+
 @xframe_options_exempt
 def add_date(request):
     return render(request,'date_page.html')

@@ -1,6 +1,9 @@
 def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
+    from bot.lib.maker import get_maker_id
     from bot.lib.pattern import create_pattern
     from bot.lib.project import update_project
+    from bot.models import Material
+    
     pattern = create_pattern(sender_id=sender_id, url=attachment_url, file_type=attachment_type)
     update_project(sender_id=sender_id, project_id=context["project_id"], pattern_id=str(pattern.id))
     new_context = context
@@ -10,14 +13,15 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
                     "content_type":"text",
                     "title":"New Material",
                     "payload":"ADD_MATERIAL",
-                },
-                {
-                    "content_type":"text",
-                    "title":"Select Material",
-                    "payload":"SELECT_MATERIAL",
-                },
-            ]
-    )
+                }])
+    if Material.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).count() > 0:
+        response['quick_replies'].append(
+            {
+                "content_type": "text",
+                "title": "Select Material",
+                "payload": "SELECT_MATERIAL",
+            }
+        )
     return response, new_context, conversation
 
 

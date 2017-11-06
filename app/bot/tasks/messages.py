@@ -18,7 +18,6 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
     from bot.lib.conversation import load_conversation
     send_message(sender_id=sender_id, action='mark_seen')
     maker = Maker.objects.prefetch_related("conversation_stage__conversation").get(id=get_maker_id(sender_id=sender_id))
-
     conversation = load_conversation(
         conversation_name=maker.conversation_stage.conversation.name,
         stage_name=maker.conversation_stage.name
@@ -56,7 +55,6 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
             attachment=response.get('attachment'),
             quick_replies=response.get('quick_replies')
         )
-        print(r.content)
         update_maker(sender_id=sender_id, context=context, conversation=next_conversation)
     return valid
 
@@ -72,11 +70,16 @@ def process_menu_selection(sender_id, postback):
     if postback == "ADD_PROJECT_PAYLOAD":
         conversation = dict(name="create_project", stage="name_project")
         # TODO handle when a user has too many projects
-        message_text = "Great! What would you like to call this project?"
+        projects = Project.objects.filter(maker_id=get_maker_id(
+            sender_id=sender_id)).filter(complete=True).exclude(finished=True)
+        if projects.count() == 6:
+            message_text = "Sorry it looks like you have max out your new project. You need to finish something before you can add anything new"
+        else:
+            message_text = "Great! What would you like to call this project?"
 
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation = dict(name="update_project_status", stage="project_selection")
-        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=True)
+        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=False)
         if projects.count() > 0:
             attachment = format_project_carousel(projects=projects)
         else:

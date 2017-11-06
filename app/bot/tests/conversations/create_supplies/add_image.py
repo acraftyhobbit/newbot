@@ -38,7 +38,7 @@ class AddImageSuppliesConversationTestCase(TestCase):
         self.assertEqual(Maker.objects.get(sender_id='1').patterns.count(), 1)
 
 
-class ValidateAddImageConversationTestCase(TestCase):
+class ValidateAddImageSupplyConversationTestCase(TestCase):
     def setUp(self):
         pass
 
