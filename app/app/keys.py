@@ -3,6 +3,8 @@ import boto3
 from base64 import b64decode
 ENVIRONMENT = os.environ.get("ENVIRONMENT", 'local')
 
+print(os.environ.get('ENCRYPTED_FACEBOOK_TOKEN'))
+
 if os.environ.get('ENCRYPTED_FACEBOOK_TOKEN'):
     FACEBOOK_TOKEN = boto3.client('kms').decrypt(
         CiphertextBlob=b64decode(os.environ.get('ENCRYPTED_FACEBOOK_TOKEN'))
