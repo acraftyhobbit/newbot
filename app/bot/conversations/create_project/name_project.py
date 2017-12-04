@@ -20,8 +20,8 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
             response['quick_replies'].append(
                 {
                     "content_type": "text",
-                    "title": "Select Material",
-                    "payload": "SELECT_MATERIAL",
+                    "title": "Select Pattern",
+                    "payload": "SELECT_PATTERN",
                 }
             )
         conversation = dict(name='create_project', stage='pattern_menu')

@@ -2,7 +2,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     from bot.lib.project import create_project
     from bot.models import Material
     from bot.lib.maker import get_maker_id
-    from .utilities import format_supply_carousel
+    from .utilities import format_supply_carousel, send_materials
     action = 'add'
     if (quick_reply and 'select' in quick_reply.lower()) or (message_text and 'select' in message_text.lower()):
         action = 'select'
@@ -13,8 +13,12 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
 
     if action == 'select':
         maker_id = get_maker_id(sender_id=sender_id)
-        query_set = Material.objects.filter(maker_id=maker_id)
-        response = dict(attachment=format_supply_carousel(supply_query_set=query_set))
+        materials = Material.objects.filter(maker_id=maker_id)
+        if materials.count() <= 2:
+            response = dict(attachment=format_supply_carousel(
+                supply_query_set=materials))
+        elif materials.count() > 2:
+            response = send_materials(sender_id=sender_id)
     else:
         response = dict(message_text='Take a photo of your material')
     return response, new_context, conversation

@@ -60,3 +60,84 @@ def post_date(request):
         attachment_type=None
     )
     return HttpResponse('OK')
+
+
+@xframe_options_exempt
+def update_project(request):
+    from bot.models import Project
+    from bot.lib.maker import get_maker_id
+    from common.utilities import get_file_url
+    maker_id = get_maker_id(request.GET.get('sender_id'))
+    projects = Project.objects.filter(
+            maker_id=maker_id
+        ).exclude(
+            finished=True
+        ).filter(
+            complete=True
+        ).prefetch_related("tags").prefetch_related("patterns__files")
+    # project name: str, project img: url, project id: str, project tags: str
+    project_dicts = []
+    for project in projects:
+        project_dict=dict(
+            id = project.id,
+            name = project.name,
+            img_url= get_file_url(project.patterns.first().files.first()),
+            tags = ", ".join([i.name for i in project.tags.all()])
+        )
+        project_dicts.append(project_dict)
+    return render(request, 'projects.html', context=dict(projects=project_dicts))
+
+
+@csrf_exempt
+@xframe_options_exempt
+def post_project(request):
+    from .tasks import route_message
+    from django.http import HttpResponse
+    route_message(
+        sender_id=request.POST.get('sender_id'),
+        message_text=None,
+        quick_reply=None,
+        postback=request.POST.get('project_id'),
+        attachment_url=None,
+        attachment_type=None
+    )
+    return HttpResponse('OK')
+
+
+@xframe_options_exempt
+def select_supply(request):
+    from bot.models import Pattern, Material
+    from bot.lib.maker import get_maker_id
+    from common.utilities import get_file_url
+    supply_class = Pattern
+    if "material" in request.path.lower():
+        supply_class = Material
+    maker_id = get_maker_id(request.GET.get('sender_id'))
+    supplies = supply_class.objects.filter(
+            maker_id=maker_id
+        ).prefetch_related("tags").prefetch_related("files")
+    supply_dicts = []
+    for supply in supplies:
+        supply_dict = dict(
+            id=supply.id,
+            img_url=get_file_url(supply.files.first()),
+            tags=", ".join([i.name for i in supply.tags.all()])
+        )
+        supply_dicts.append(supply_dict)
+    return render(request, 'supplies.html', context=dict(supplies=supply_dicts))
+
+
+@csrf_exempt
+@xframe_options_exempt
+def post_supply(request):
+    from .tasks import route_message
+    from django.http import HttpResponse
+    route_message(
+        sender_id=request.POST.get('sender_id'),
+        message_text=None,
+        quick_reply=None,
+        postback=request.POST.get('supply_id'),
+        attachment_url=None,
+        attachment_type=None
+    )
+    return HttpResponse('OK')

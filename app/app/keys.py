@@ -2,7 +2,7 @@ import os
 import boto3
 ENVIRONMENT = os.environ.get("ENVIRONMENT", 'local')
 
-FACEBOOK_TOKEN = os.environ.get('ENCRYPTED_FACEBOOK_TOKEN')
+FACEBOOK_TOKEN = os.environ.get('FACEBOOK_TOKEN')
 DB_PASSWORD = os.environ.get('ENCRYPTED_CRAFTY_DB_PASSWORD', 'test')
 SECRET_KEY = os.environ.get('ENCRYPTED_DJANGO_SECRET_KEY', 'kzv$s=4j$y5hkx4$9kai799(kf$ac^rix=t_0b149*wx!iit+t')
 

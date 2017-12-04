@@ -1,4 +1,4 @@
-def format_supply_carousel(supply_query_set, page=0):
+def format_supply_carousel(supply_query_set,):
     from common.utilities import get_file_url
     carousel = {
             "type":"template",
@@ -7,7 +7,7 @@ def format_supply_carousel(supply_query_set, page=0):
             "elements":[]
         }
     }
-    supply_count = supply_query_set.count()
+    ''' supply_count = supply_query_set.count()
     supply_query_set.prefetch_related('files').prefetch_related('tags')
     if page > 0:
         carousel['payload']['elements'].append(
@@ -22,8 +22,8 @@ def format_supply_carousel(supply_query_set, page=0):
                 }
             ]
         }
-    )
-    for supply in supply_query_set[page*9:(page+1)*9]:
+    ) '''
+    for supply in supply_query_set:
         element = {
             "title": " ".join(["#{0}".format(tag.name) for tag in supply.tags.all()]),
             "image_url": get_file_url(supply.files.first()),
@@ -42,7 +42,7 @@ def format_supply_carousel(supply_query_set, page=0):
         carousel['payload']['elements'].append(
             element
         )
-    if supply_count > 9*(page+1):
+    """if supply_count > 9*(page+1):
         carousel['payload']['elements'].append(
             {
                 "title": "View More",
@@ -56,7 +56,7 @@ def format_supply_carousel(supply_query_set, page=0):
                     }
             ]
         }
-    )
+    )"""
     return carousel
 
 def send_date_picker(sender_id):
@@ -75,6 +75,49 @@ def send_date_picker(sender_id):
                         "messenger_extensions": True
                     }
                 ]
+            }
+        }
+    )
+    return response
+
+def send_patterns(sender_id):
+    from app.settings import DOMAIN
+    response = dict(
+        attachment={
+        "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Which pattern do you want add to your project?",
+                    "buttons": [
+                        {
+                            "type": "web_url",
+                            "url": "{0}/bot/pattern/?sender_id={1}".format(DOMAIN, sender_id),
+                            "title": "Select A Pattern",
+                            "messenger_extensions": True
+                        }
+                    ]
+                }
+        }
+    )
+    return response
+
+
+def send_materials(sender_id):
+    from app.settings import DOMAIN
+    response = dict(
+        attachment={
+            "type": "template",
+            "payload": {
+                    "template_type": "button",
+                    "text": "Which material do you want add to your project?",
+                    "buttons": [
+                        {
+                            "type": "web_url",
+                            "url": "{0}/bot/material/?sender_id={1}".format(DOMAIN, sender_id),
+                            "title": "Select A Material",
+                            "messenger_extensions": True
+                        }
+                    ]
             }
         }
     )
