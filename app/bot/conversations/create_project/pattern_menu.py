@@ -2,7 +2,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     from bot.lib.project import create_project
     from bot.models import Material, Pattern
     from bot.lib.maker import get_maker_id
-    from .utilities import format_supply_carousel
+    from .utilities import format_supply_carousel, send_patterns
     supply_type = 'pattern'
     action = 'add'
     if (quick_reply and 'select' in quick_reply.lower()) or (message_text and 'select' in message_text.lower()):
@@ -14,11 +14,13 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
 
     if action == 'select':
         maker_id = get_maker_id(sender_id=sender_id)
-        if supply_type == 'material':
-            query_set = Material.objects.filter(maker_id=maker_id)
-        else:
-            query_set = Pattern.objects.filter(maker_id=maker_id)
-        response = dict(attachment=format_supply_carousel(supply_query_set=query_set))
+        patterns = Pattern.objects.filter(maker_id=maker_id)
+        if patterns.count() <= 2:
+            response = dict(attachment=format_supply_carousel(
+                supply_query_set=patterns))
+        elif patterns.count() > 2:
+            response = send_patterns(sender_id=sender_id)
+        
     else:
         response = dict(message_text='Take a photo of your {0}'.format(supply_type))
     return response, new_context, conversation

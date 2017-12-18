@@ -1,0 +1,37 @@
+ .select-button {
+     background-color: #006eff;
+     color: white;
+     border-radius: 15px;
+     text-align: right;
+ }
+ body {
+     width: 0px;
+     padding: 0px;
+     margin: 0px;
+ }
+ .project-panel {
+     width: 300px;
+     border: 1px solid rgb(239, 238, 241);
+     box-shadow: 3px 3px 2px #888888;
+     padding: 25px;
+     margin: 25px;
+ }
+ .project-heading{
+     text-align: center;
+     color: blue;
+ }
+ p{
+     text-align: center;
+     color: gray;
+ }
+ .project-image{
+     display: block;
+     margin: 0 auto;
+ }
+ img{
+     border: 1px solid rgb(78, 78, 78);
+ }
+ button{
+     display: block;
+     right: 0;
+ }

@@ -20,3 +20,13 @@ app/common/file_management/file_types/__pycache__/
 deployment/keys.sh
 .vscode/*
 /deployment/codebuild/
+*.pyc
+*.cpython-35.pyc
+
+app/bot/__pycache__/views.cpython-35.pyc
+app/bot/__pycache__/admin.cpython-35.pyc
+app/bot/__pycache__/models.cpython-35.pyc
+app/bot/__pycache__/urls.cpython-35.pyc
+app/app/__pycache__/settings.cpython-35.pyc
+app/app/__pycache__/__init__.cpython-35.pyc
+app/app/__pycache__/keys.cpython-35.pyc

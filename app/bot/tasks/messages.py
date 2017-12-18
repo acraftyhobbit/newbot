@@ -79,19 +79,25 @@ def process_menu_selection(sender_id, postback):
 
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation = dict(name="update_project_status", stage="project_selection")
-        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=False)
-        if projects.count() > 0:
-            attachment = format_project_carousel(projects=projects)
-        else:
+        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=True)
+        
+        if projects.count() == 0:
             message_text = "It looks like you don't have any active projects. Add a project to get started!"
-
+            conversation = dict(name="menu", stage="menu")
+        elif projects.count() <= 2:
+            attachment = format_project_carousel(projects=projects)
+        elif projects.count() > 2:
+            attachment = send_update_project(sender_id=sender_id)
+        
     elif postback in ["ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         conversation = dict(name="create_supplies", stage="add_image")
         context = dict(type=postback.split("_")[1].lower())
         message_text = "Awesome! Please take a photo of the {0} to get started".format(context['type'])
-
+    
     update_maker(sender_id=sender_id, conversation=conversation, context=context)
+    print('update_maker')
     send_message(sender_id=sender_id, text=message_text, attachment=attachment)
+    print('send_message')
 
 
 def welcome_new_user(sender_id):
@@ -131,3 +137,23 @@ def format_project_carousel(projects):
             element
         )
     return carousel
+
+
+def send_update_project(sender_id):
+    from app.settings import DOMAIN
+    attachment = {
+        "type": "template",
+        "payload": {
+            "template_type": "button",
+            "text": "Which project do you want update today?",
+            "buttons": [
+                {
+                    "type": "web_url",
+                    "url": "{0}/bot/project/?sender_id={1}".format(DOMAIN, sender_id),
+                    "title": "Select A Project",
+                    "messenger_extensions": True
+                }
+            ]
+        }
+    }
+    return attachment
