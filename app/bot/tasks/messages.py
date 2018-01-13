@@ -95,9 +95,7 @@ def process_menu_selection(sender_id, postback):
         message_text = "Awesome! Please take a photo of the {0} to get started".format(context['type'])
     
     update_maker(sender_id=sender_id, conversation=conversation, context=context)
-    print('update_maker')
     send_message(sender_id=sender_id, text=message_text, attachment=attachment)
-    print('send_message')
 
 
 def welcome_new_user(sender_id):

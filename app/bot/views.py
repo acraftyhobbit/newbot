@@ -13,8 +13,8 @@ def facebook(request):
         try:
             process_request(json.loads(request.body.decode('utf-8')))
         except Exception as e:
-            print(e)
-            traceback.print_exc()
+            pass
+            #traceback.print_exc()
         return HttpResponse('OK')
 
 

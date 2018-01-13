@@ -17,7 +17,6 @@ def send_message(sender_id, text=None, attachment=None, quick_replies=None, butt
     r = requests.post(
         url='https://graph.facebook.com/v2.6/me/messages?access_token={0}'.format(FACEBOOK_TOKEN), json=data
     )
-    print(r.content)
     return r
 
 

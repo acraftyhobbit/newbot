@@ -36,9 +36,7 @@ def load_relationship_model(obj_1, obj_2):
         module = import_module(module_name)
         class_template = getattr(module, class_name)
     except AttributeError:
-        print(obj_1._meta.model_name)
-        print(obj_2._meta.model_name)
-        print(class_name)
+        pass
     return class_template
 
 
