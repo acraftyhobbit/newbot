@@ -1,14 +1,22 @@
-FROM perrystallings/ubuntu-python3.5.2:latest
+FROM perrystallings/ubuntu-python3.5.2-django-celery-test:latest
 
-EXPOSE 6379 11211 80 5432
-
-RUN mkdir /apps && \
-    mkdir /apps/files && \
-    mkdir /apps/logs
+RUN apt-get update && \
+    apt-get install -y nginx python-pip
 
 COPY . /apps/.
 
-RUN python -m virtualenv /apps/env -p python3.5 && \
-    . /apps/env/bin/activate && \
+RUN cp /apps/deployment/conf/nginx.conf /etc/nginx/sites-available/ && \
+    ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled && \
+    echo "daemon off;" >> /etc/nginx/nginx.conf
+
+EXPOSE 8000
+
+RUN python -m virtualenv env -p python3.5 && \
+    . env/bin/activate && \
     pip install --upgrade pip && \
-    pip install -q -r /apps/deployment/requirements.txt
+    pip install -r /apps/requirements.txt
+
+RUN chmod +x /apps/deployment/startup/app.sh && \
+    chmod +x /apps/deployment/startup/local.sh && \
+    chmod +x /apps/deployment/startup/test.sh && \
+    chmod +x /apps/deployment/startup/worker.sh

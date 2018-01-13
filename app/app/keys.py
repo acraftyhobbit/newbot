@@ -26,9 +26,4 @@ DATABASES = dict(
     )
 )
 
-CELERY_BROKER_URL = "sqs://"
-broker_transport_options = {
-    'region': S3_REGION,
-    'queue_name_prefix': 'craftybot-',
-    'polling_interval': 20
-}
+CELERY_BROKER_URL = 'redis://{0}:6379/0'.format(os.environ.get('CELERY_BROKER', 'localhost'))

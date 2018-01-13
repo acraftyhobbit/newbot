@@ -1,5 +1,7 @@
+aiohttp==2.3.2
 amqp==2.2.2
 asn1crypto==0.23.0
+async-timeout==2.0.0
 awscli==1.11.170
 billiard==3.5.0.3
 boto3==1.4.7
@@ -12,9 +14,11 @@ colorama==0.3.7
 cryptography==2.1.1
 Django==1.11.6
 docutils==0.14
+gunicorn==19.7.1
 idna==2.6
 jmespath==0.9.3
 kombu==4.1.0
+multidict==3.3.2
 psycopg2==2.7.3.1
 pyasn1==0.3.7
 pycparser==2.18
@@ -30,3 +34,4 @@ s3transfer==0.1.11
 six==1.11.0
 urllib3==1.22
 vine==1.1.4
+yarl==0.14.0
