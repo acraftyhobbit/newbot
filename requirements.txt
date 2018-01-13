@@ -14,6 +14,9 @@ colorama==0.3.7
 cryptography==2.1.1
 Django==1.11.6
 docutils==0.14
+enum34==1.1.6
+eventlet==0.22.0
+greenlet==0.4.12
 gunicorn==19.7.1
 idna==2.6
 jmespath==0.9.3
