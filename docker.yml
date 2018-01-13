@@ -8,7 +8,6 @@ phases:
       - pip install --upgrade pip
       - pip install awscli
       - aws configure set s3.signature_version s3v4
-      - aws s3 cp s3://forge-keys/docker.sh deployment/keys/docker.sh
       - echo "success"
   build:
     commands:
