@@ -24,10 +24,56 @@ class RouteMenuTestCase(TestCase):
             get_conversation_stage_id(conversation_name='menu', stage_name='menu')
         )
 
-    def test_update_project(self):
+    def test_update_project_no_projects(self):
         from bot.tasks import route_message
         from bot.lib.conversation import get_conversation_stage_id
         from bot.models import Maker
+        route_message(
+            sender_id=self.sender_id,
+            message_text=None,
+            quick_reply=None,
+            postback='UPDATE_PROJECT_PAYLOAD',
+            attachment_type=None,
+            attachment_url=None
+        )
+        self.assertEqual(
+            Maker.objects.get(sender_id=self.sender_id).conversation_stage_id,
+            get_conversation_stage_id(conversation_name='menu', stage_name='menu')
+        )
+
+    def test_update_project_with_projects(self):
+        from bot.tasks import route_message
+        from bot.lib.conversation import get_conversation_stage_id
+        from bot.models import Maker
+        from bot.lib.maker import create_maker
+        from bot.lib.project import create_project, update_project
+        from bot.lib.material import create_material
+        from bot.lib.pattern import create_pattern
+
+        self.sender_id = '1'
+        self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
+        self.pattern_type = 'image'
+        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_type = 'image'
+        self.project_name = 'test_project'
+        self.due_date = '2017-01-01'
+        self.tags = ['1', '2', '3']
+        self.update_url = 'http://craftybot.com/test_status_image.jpg'
+        self.update_type = 'image'
+        create_maker(sender_id=self.sender_id)
+        project, created = create_project(sender_id=self.sender_id, name=self.project_name)
+        self.project = project
+        self.material = create_material(sender_id=self.sender_id, url=self.material_url, file_type=self.material_type)
+        self.pattern = create_pattern(sender_id=self.sender_id, url=self.pattern_url, file_type=self.pattern_type)
+
+        update_project(
+            sender_id=self.sender_id,
+            project_id=str(self.project.id),
+            date_string=self.due_date,
+            material_id=str(self.material.id),
+            pattern_id=str(self.pattern.id),
+            tags=self.tags
+        )
         route_message(
             sender_id=self.sender_id,
             message_text=None,
@@ -83,7 +129,6 @@ class RouteMenuTestCase(TestCase):
 class RouteMessageTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
-        from bot.tasks import route_message
         self.sender_id = '1'
         create_maker(sender_id=self.sender_id)
 
