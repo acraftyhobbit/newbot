@@ -9,7 +9,7 @@ RUN cp /apps/deployment/conf/nginx.conf /etc/nginx/sites-available/ && \
     ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled && \
     echo "daemon off;" >> /etc/nginx/nginx.conf
 
-EXPOSE 8000
+EXPOSE 80 443
 
 RUN python -m virtualenv env -p python3.5 && \
     . env/bin/activate && \
