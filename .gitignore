@@ -31,3 +31,4 @@ app/app/__pycache__/settings.cpython-35.pyc
 app/app/__pycache__/__init__.cpython-35.pyc
 app/app/__pycache__/keys.cpython-35.pyc
 /deployment/keys/fb.sh
+/deployment/startup/docker_prod.sh
