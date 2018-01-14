@@ -6,7 +6,6 @@ urlpatterns = [
     url('^facebook', facebook, name='Facebook'),
     url(r'^date', add_date, name='due_date'),
     url(r'^post_date', post_date, name='post_date'),
-    url(r'healthcheck', health_check, name='health_check'),
     url(r'^project', update_project, name='update_project'),
     url(r'^post_project', post_project, name='post_date'),
     url(r'^pattern', select_supply, name='select_pattern'),
