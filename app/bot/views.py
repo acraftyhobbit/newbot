@@ -1,11 +1,11 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 
 @csrf_exempt
 def facebook(request):
-    import json, traceback
+    import json
     from django.http import HttpResponse
     if request.method == 'GET':
         return HttpResponse(request.GET['hub.challenge'])
@@ -14,7 +14,7 @@ def facebook(request):
             process_request(json.loads(request.body.decode('utf-8')))
         except Exception as e:
             pass
-            #traceback.print_exc()
+            # traceback.print_exc()
         return HttpResponse('OK')
 
 
@@ -37,14 +37,17 @@ def process_request(request):
         postback = message.get('postback', dict()).get('payload')
         route_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type)
 
+
 def health_check(request):
     """Heath check needed for https validations"""
     from django.http import HttpResponse
     return HttpResponse('OK')
 
+
 @xframe_options_exempt
 def add_date(request):
-    return render(request,'date_page.html')
+    return render(request, 'date_page.html')
+
 
 @csrf_exempt
 @xframe_options_exempt
@@ -56,7 +59,7 @@ def post_date(request):
         message_text=request.POST.get('date'),
         quick_reply=None,
         postback=None,
-        attachment_url=None, 
+        attachment_url=None,
         attachment_type=None
     )
     return HttpResponse('OK')
@@ -69,20 +72,20 @@ def update_project(request):
     from common.utilities import get_file_url
     maker_id = get_maker_id(request.GET.get('sender_id'))
     projects = Project.objects.filter(
-            maker_id=maker_id
-        ).exclude(
-            finished=True
-        ).filter(
-            complete=True
-        ).prefetch_related("tags").prefetch_related("patterns__files")
+        maker_id=maker_id
+    ).exclude(
+        finished=True
+    ).filter(
+        complete=True
+    ).prefetch_related("tags").prefetch_related("patterns__files")
     # project name: str, project img: url, project id: str, project tags: str
     project_dicts = []
     for project in projects:
-        project_dict=dict(
-            id = project.id,
-            name = project.name,
-            img_url= get_file_url(project.patterns.first().files.first()),
-            tags = ", ".join([i.name for i in project.tags.all()])
+        project_dict = dict(
+            id=project.id,
+            name=project.name,
+            img_url=get_file_url(project.patterns.first().files.first()),
+            tags=", ".join([i.name for i in project.tags.all()])
         )
         project_dicts.append(project_dict)
     return render(request, 'projects.html', context=dict(projects=project_dicts))
@@ -114,8 +117,8 @@ def select_supply(request):
         supply_class = Material
     maker_id = get_maker_id(request.GET.get('sender_id'))
     supplies = supply_class.objects.filter(
-            maker_id=maker_id
-        ).prefetch_related("tags").prefetch_related("files")
+        maker_id=maker_id
+    ).prefetch_related("tags").prefetch_related("files")
     supply_dicts = []
     for supply in supplies:
         supply_dict = dict(

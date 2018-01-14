@@ -15,8 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def health_check(request):
+    """Heath check needed for https validations"""
+    from django.http import HttpResponse
+    return HttpResponse('OK')
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^bot/', include('bot.urls'))
+    url(r'^bot/', include('bot.urls')),
+    url(r'healthcheck', health_check, name='health_check'),
 ]
