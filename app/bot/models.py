@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Maker(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     sender_id = models.TextField(unique=True)
     conversation_stage = models.ForeignKey('ConversationStage', null=True, default=None)
@@ -12,6 +13,7 @@ class Maker(models.Model):
 
 
 class ConversationStage(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=64, editable=False)
     conversation = models.ForeignKey('Conversation')
@@ -19,12 +21,14 @@ class ConversationStage(models.Model):
 
 
 class Conversation(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=64, editable=False)
     created = models.DateTimeField(auto_now_add=True)
 
 
 class MakerProfile(models.Model):
+    """"""
     maker = models.OneToOneField(
         "Maker",
         on_delete=models.CASCADE,
@@ -41,6 +45,7 @@ class MakerProfile(models.Model):
 
 
 class DueDate(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='due_dates')
     date = models.DateField()
@@ -48,6 +53,7 @@ class DueDate(models.Model):
 
 
 class Project(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='projects')
     name = models.TextField(editable=False)
@@ -61,6 +67,7 @@ class Project(models.Model):
 
 
 class ProjectDueDate(models.Model):
+    """""""
     project = models.OneToOneField(
         "Project",
         on_delete=models.CASCADE,
@@ -71,6 +78,7 @@ class ProjectDueDate(models.Model):
 
 
 class Material(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='materials')
     files = models.ManyToManyField('File', through='MaterialFile', related_name='materials')
@@ -80,6 +88,7 @@ class Material(models.Model):
 
 
 class Pattern(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='patterns')
     files = models.ManyToManyField('File', through='PatternFile', related_name='patterns')
@@ -89,6 +98,7 @@ class Pattern(models.Model):
 
 
 class ProjectStatus(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     maker = models.ForeignKey('Maker', related_name='project_statuses', null=True, default=None)
     project = models.ForeignKey('Project', related_name='statuses')
@@ -99,6 +109,7 @@ class ProjectStatus(models.Model):
 
 
 class ProjectStatusCompletion(models.Model):
+    """"""
     project_status = models.OneToOneField(
         "ProjectStatus",
         on_delete=models.CASCADE,
@@ -109,6 +120,7 @@ class ProjectStatusCompletion(models.Model):
 
 
 class ProjectMaterial(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     project = models.ForeignKey('Project')
     material = models.ForeignKey('Material')
@@ -116,6 +128,7 @@ class ProjectMaterial(models.Model):
 
 
 class ProjectPattern(models.Model):
+    """""""
     id = models.UUIDField(primary_key=True, editable=False)
     project = models.ForeignKey('Project')
     pattern = models.ForeignKey('Pattern')
@@ -123,12 +136,14 @@ class ProjectPattern(models.Model):
 
 
 class Tag(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     name = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
 
 
 class PatternFile(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     file = models.ForeignKey('File')
     pattern = models.ForeignKey('Pattern')
@@ -136,6 +151,7 @@ class PatternFile(models.Model):
 
 
 class ProjectStatusFile(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     file = models.ForeignKey('File')
     project_status = models.ForeignKey('ProjectStatus')
@@ -143,6 +159,7 @@ class ProjectStatusFile(models.Model):
 
 
 class MaterialFile(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     file = models.ForeignKey('File')
     material = models.ForeignKey('Material')
@@ -150,6 +167,7 @@ class MaterialFile(models.Model):
 
 
 class MaterialTag(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     tag = models.ForeignKey('Tag')
     material = models.ForeignKey('Material')
@@ -157,6 +175,7 @@ class MaterialTag(models.Model):
 
 
 class PatternTag(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     tag = models.ForeignKey('Tag')
     pattern = models.ForeignKey('Pattern')
@@ -164,6 +183,7 @@ class PatternTag(models.Model):
 
 
 class ProjectTag(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     tag = models.ForeignKey('Tag')
     project = models.ForeignKey('Project')
@@ -171,6 +191,7 @@ class ProjectTag(models.Model):
 
 
 class ProjectStatusTag(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     tag = models.ForeignKey('Tag')
     project_status = models.ForeignKey('ProjectStatus')
@@ -178,6 +199,7 @@ class ProjectStatusTag(models.Model):
 
 
 class File(models.Model):
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     url = models.TextField()
     type = models.ForeignKey('FileType', related_name='files')
