@@ -3,7 +3,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     from bot.models import Material, Pattern
     from bot.lib.maker import get_maker_id
     from .utilities import format_supply_carousel, send_patterns
-     """Takes in ``sender_id``, ``message_text``= add or select, ``quick_reply`` = add or select
+    """Takes in ``sender_id``, ``message_text``= add or select, ``quick_reply`` = add or select
     ``context``= project id and updates project and sends a reponse.
 
     :param str sender_id: The unique id created by facebook and the current facebook's sender's ID
@@ -27,10 +27,10 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     conversation = dict(name='create_project', stage='{0}_{1}'.format(action, supply_type))
 
     new_context = context
-
     if action == 'select':
         maker_id = get_maker_id(sender_id=sender_id)
         patterns = Pattern.objects.filter(maker_id=maker_id)
+        print(patterns)
         if patterns.count() <= 2:
             response = dict(attachment=format_supply_carousel(
                 supply_query_set=patterns))
