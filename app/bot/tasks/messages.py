@@ -74,6 +74,8 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
             attachment=response.get('attachment'),
             quick_replies=response.get('quick_replies')
         )
+        print('Finished')
+        print(r.content)
         # Sets the next stage of the conversation and persists and conversation context.
         update_maker(sender_id=sender_id, context=context, conversation=next_conversation)
     return valid
@@ -95,10 +97,8 @@ def process_menu_selection(sender_id, postback):
             sender_id=sender_id)).filter(complete=True).exclude(finished=True)
         if projects.count() == 6:
             message_text = "Sorry it looks like you have max out your new project. You need to finish something before you can add anything new"
-        elif projects.count() <= 2:
-            attachment = format_project_carousel(projects=projects)
-        elif projects.count() > 2:
-            attachment = send_update_project(sender_id=sender_id)
+        else:
+            message_text = "Great! What would you like to call this project?"        
 
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation = dict(name="update_project_status", stage="project_selection")
@@ -107,14 +107,15 @@ def process_menu_selection(sender_id, postback):
         if projects.count() == 0:
             message_text = "It looks like you don't have any active projects. Add a project to get started!"
             conversation = dict(name="menu", stage="menu")
-        else:
+        elif projects.count() <= 2:
+            attachment = format_project_carousel(projects=projects)
+        elif projects.count() > 2:
             attachment = send_update_project(sender_id=sender_id)
         
     elif postback in ["ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         conversation = dict(name="create_supplies", stage="add_image")
         context = dict(type=postback.split("_")[1].lower())
         message_text = "Awesome! Please take a photo of the {0} to get started".format(context['type'])
-    
     update_maker(sender_id=sender_id, conversation=conversation, context=context)
     send_message(sender_id=sender_id, text=message_text, attachment=attachment)
 

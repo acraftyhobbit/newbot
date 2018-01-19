@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 def facebook(request):
     import json
     from django.http import HttpResponse
+    import traceback
     """Connection to facebook verification"""
     if request.method == 'GET':
         return HttpResponse(request.GET['hub.challenge'])
@@ -14,8 +15,7 @@ def facebook(request):
         try:
             process_request(json.loads(request.body.decode('utf-8')))
         except Exception as e:
-            pass
-            # traceback.print_exc()
+            traceback.print_exc()
         return HttpResponse('OK')
 
 
