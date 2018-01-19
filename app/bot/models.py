@@ -67,7 +67,7 @@ class Project(models.Model):
 
 
 class ProjectDueDate(models.Model):
-    """""""
+    """"""
     project = models.OneToOneField(
         "Project",
         on_delete=models.CASCADE,
@@ -128,7 +128,7 @@ class ProjectMaterial(models.Model):
 
 
 class ProjectPattern(models.Model):
-    """""""
+    """"""
     id = models.UUIDField(primary_key=True, editable=False)
     project = models.ForeignKey('Project')
     pattern = models.ForeignKey('Pattern')
