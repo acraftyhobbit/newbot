@@ -13,6 +13,7 @@ chardet==3.0.4
 colorama==0.3.7
 cryptography==2.1.1
 Django==1.11.6
+django-storages==1.6.5
 docutils==0.14
 enum34==1.1.6
 eventlet==0.22.0
