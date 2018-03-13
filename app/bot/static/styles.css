@@ -1,37 +1,46 @@
  .select-button {
      background-color: #006eff;
      color: white;
-     border-radius: 15px;
-     text-align: right;
+     text-align: center;
+     border: 1px solid rgb(23, 53, 151);
  }
+
  body {
      width: 0px;
      padding: 0px;
      margin: 0px;
+     background-color: rgb(199, 197, 197);
  }
- .project-panel {
+
+ .panel {
      width: 300px;
      border: 1px solid rgb(239, 238, 241);
      box-shadow: 3px 3px 2px #888888;
      padding: 25px;
      margin: 25px;
+     border-radius: 10px;
+     background-color: rgb(252, 248, 244);
  }
- .project-heading{
+
+ .heading {
      text-align: center;
-     color: blue;
+     color: #006eff;
+     padding: 0px;
+     margin: 0px;
  }
- p{
+
+ p {
      text-align: center;
      color: gray;
  }
- .project-image{
+
+ .image {
      display: block;
      margin: 0 auto;
  }
- img{
+
+ img {
      border: 1px solid rgb(78, 78, 78);
- }
- button{
-     display: block;
-     right: 0;
+     max-width: 250px;
+     max-height: 250px;
  }
