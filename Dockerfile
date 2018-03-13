@@ -14,7 +14,9 @@ EXPOSE 80 443
 RUN python -m virtualenv env -p python3.5 && \
     . env/bin/activate && \
     pip install --upgrade pip && \
-    pip install -r /apps/requirements.txt
+    pip install -r /apps/requirements.txt && \
+    cd /apps/app/ && \
+    python manage.py collectstatic --noinput
 
 RUN chmod +x /apps/deployment/startup/app.sh && \
     chmod +x /apps/deployment/startup/local.sh && \
