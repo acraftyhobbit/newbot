@@ -7,20 +7,21 @@ from django.views.decorators.csrf import csrf_exempt
 def facebook(request):
     import json
     from django.http import HttpResponse
+    import traceback
+    """Connection to facebook verification"""
     if request.method == 'GET':
         return HttpResponse(request.GET['hub.challenge'])
     else:
         try:
             process_request(json.loads(request.body.decode('utf-8')))
         except Exception as e:
-            pass
-            # traceback.print_exc()
+            traceback.print_exc()
         return HttpResponse('OK')
 
 
 def process_request(request):
     from .tasks import route_message
-
+    """Handle all incoming message from facebook."""
     for entry in request.get("entry", []):
         timestamp = entry.get("time")
         message = entry.get("messaging")[0]
@@ -46,6 +47,7 @@ def health_check(request):
 
 @xframe_options_exempt
 def add_date(request):
+    """Generates the date selection page"""
     return render(request, 'date_page.html')
 
 
@@ -54,6 +56,8 @@ def add_date(request):
 def post_date(request):
     from .tasks import route_message
     from django.http import HttpResponse
+    """User has selected and submited a date"""
+
     route_message(
         sender_id=request.POST.get('sender_id'),
         message_text=request.POST.get('date'),
@@ -70,6 +74,8 @@ def update_project(request):
     from bot.models import Project
     from bot.lib.maker import get_maker_id
     from common.utilities import get_file_url
+    """Generates all inprogress projects for the user, allowing them to select which one to update."""
+
     maker_id = get_maker_id(request.GET.get('sender_id'))
     projects = Project.objects.filter(
         maker_id=maker_id
@@ -96,6 +102,8 @@ def update_project(request):
 def post_project(request):
     from .tasks import route_message
     from django.http import HttpResponse
+    """User select a project from the list and routes to the next message"""
+
     route_message(
         sender_id=request.POST.get('sender_id'),
         message_text=None,
@@ -112,6 +120,9 @@ def select_supply(request):
     from bot.models import Pattern, Material
     from bot.lib.maker import get_maker_id
     from common.utilities import get_file_url
+    """Generates gallery for the user,
+    allowing them to select which supplies they want to use."""
+
     supply_class = Pattern
     if "material" in request.path.lower():
         supply_class = Material
@@ -135,6 +146,8 @@ def select_supply(request):
 def post_supply(request):
     from .tasks import route_message
     from django.http import HttpResponse
+    """User select a supply id from the list and routes to the next message"""
+
     route_message(
         sender_id=request.POST.get('sender_id'),
         message_text=None,

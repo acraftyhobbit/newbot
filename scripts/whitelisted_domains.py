@@ -1,4 +1,4 @@
 from common.facebook import update_messenger_profile
-domains = ['https://9b8fb740.ngrok.io']
+domains = ['https://acraftybot.com']
 
-update_messenger_profile(whitelisted_domains = domains)
+r=update_messenger_profile(whitelisted_domains = domains)

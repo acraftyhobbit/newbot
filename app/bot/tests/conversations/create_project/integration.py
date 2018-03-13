@@ -15,7 +15,7 @@ class NewProjectTestCase(TestCase):
         from bot.models import Maker
         from bot.lib.conversation import get_conversation_stage_id
         from bot.views import post_date
-        # Menu
+        # Test Create Project selection from persistent Menu
         route_message(
             sender_id=self.sender_id,
             message_text=None,
