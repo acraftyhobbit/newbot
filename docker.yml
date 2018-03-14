@@ -1,16 +1,13 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
-      - $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
   install:
     commands:
       - apt-get update
       - apt-get install -y python-pip
       - pip install --upgrade pip
       - pip install awscli
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
       - aws configure set s3.signature_version s3v4
       - REPOSITORY_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME"
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
