@@ -18,3 +18,4 @@ phases:
     commands:
       - cd app
       - python manage.py test
+      - python manage.py collectstatic --noinput
