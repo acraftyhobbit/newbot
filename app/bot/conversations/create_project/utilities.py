@@ -1,10 +1,10 @@
-def format_supply_carousel(supply_query_set,):
+def format_supply_carousel(supply_query_set, ):
     from common.utilities import get_file_url
     carousel = {
         "type": "template",
         "payload": {
-                "template_type": "generic",
-                "elements": []
+            "template_type": "generic",
+            "elements": []
         }
     }
     ''' supply_count = supply_query_set.count()
@@ -44,6 +44,7 @@ def format_supply_carousel(supply_query_set,):
         )
     return carousel
 
+
 def send_date_picker(sender_id):
     from app.settings import DOMAIN
     """ Utility function generates date picker web page for the user to select a specific date
@@ -53,16 +54,16 @@ def send_date_picker(sender_id):
     :returns: Reponse dict with attachment to web url containing date selector
     """
     response = dict(
-        attachment = {
+        attachment={
             "type": "template",
             "payload": {
-                "template_type":"button",
-                "text":"Awesome! That's all I need. When do you want to finish this project by",
-                "buttons":[
+                "template_type": "button",
+                "text": "Awesome! That's all I need. When do you want to finish this project by",
+                "buttons": [
                     {
-                        "type":"web_url",
-                        "url":"{0}/bot/date/?sender_id={1}".format(DOMAIN, sender_id),
-                        "title":"Select Due Date",
+                        "type": "web_url",
+                        "url": "{0}/bot/date/?sender_id={1}".format(DOMAIN, sender_id),
+                        "title": "Select Due Date",
                         "messenger_extensions": True
                     }
                 ]
@@ -70,6 +71,7 @@ def send_date_picker(sender_id):
         }
     )
     return response
+
 
 def send_patterns(sender_id):
     from app.settings import DOMAIN
@@ -82,19 +84,19 @@ def send_patterns(sender_id):
     """
     response = dict(
         attachment={
-        "type": "template",
-                "payload": {
-                    "template_type": "button",
-                    "text": "Which pattern do you want add to your project?",
-                    "buttons": [
-                        {
-                            "type": "web_url",
-                            "url": "{0}/bot/pattern/?sender_id={1}".format(DOMAIN, sender_id),
-                            "title": "Select A Pattern",
-                            "messenger_extensions": True
-                        }
-                    ]
-                }
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "Which pattern do you want add to your project?",
+                "buttons": [
+                    {
+                        "type": "web_url",
+                        "url": "{0}/bot/pattern/?sender_id={1}".format(DOMAIN, sender_id),
+                        "title": "Select A Pattern",
+                        "messenger_extensions": True
+                    }
+                ]
+            }
         }
     )
     return response
@@ -113,16 +115,16 @@ def send_materials(sender_id):
         attachment={
             "type": "template",
             "payload": {
-                    "template_type": "button",
-                    "text": "Which material do you want add to your project?",
-                    "buttons": [
-                        {
-                            "type": "web_url",
-                            "url": "{0}/bot/material/?sender_id={1}".format(DOMAIN, sender_id),
-                            "title": "Select A Material",
-                            "messenger_extensions": True
-                        }
-                    ]
+                "template_type": "button",
+                "text": "Which material do you want add to your project?",
+                "buttons": [
+                    {
+                        "type": "web_url",
+                        "url": "{0}/bot/material/?sender_id={1}".format(DOMAIN, sender_id),
+                        "title": "Select A Material",
+                        "messenger_extensions": True
+                    }
+                ]
             }
         }
     )

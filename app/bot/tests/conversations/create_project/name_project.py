@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 class ValidateNameProjectTestCase(TestCase):
     def test_empty_message(self):
         from bot.conversations.create_project.name_project import validate

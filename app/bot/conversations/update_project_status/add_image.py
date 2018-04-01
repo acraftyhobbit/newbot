@@ -16,10 +16,11 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     the next stage and task for the the bot
     """
 
-    project_status = create_project_status(sender_id=sender_id, project_id=context['project_id'], url=attachment_url, file_type=attachment_type)
-    new_context = dict(project_status_id = str(project_status.id))
+    project_status = create_project_status(sender_id=sender_id, project_id=context['project_id'], url=attachment_url,
+                                           file_type=attachment_type)
+    new_context = dict(project_status_id=str(project_status.id))
     conversation = dict(name='update_project_status', stage='how_complete')
-    response = dict(message_text = "Awesome! Now tell me what pecentage between 1 - 100 complete are you?")
+    response = dict(message_text="Awesome! Now tell me what pecentage between 1 - 100 complete are you?")
     return response, new_context, conversation
 
 
@@ -34,7 +35,7 @@ def validate(sender_id, message_text, attachment_type, postback, quick_reply):
     :param str quick_reply: an automatic (optional, defaults to None)
 
     :returns: Booleen and a dict with message text if the message is not valid """
-    
+
     if attachment_type in ['image']:
         return True, dict(message_text='')
     else:

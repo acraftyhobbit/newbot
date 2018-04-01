@@ -9,9 +9,9 @@ class UpdateProjectTestCase(TestCase):
         from bot.lib.pattern import create_pattern
 
         self.sender_id = '1'
-        self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
+        self.pattern_url = 'http://via.placeholder.com/350x150'
         self.pattern_type = 'image'
-        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_url = 'http://via.placeholder.com/350x150'
         self.material_type = 'image'
         self.project_name = 'test_project'
         self.due_date = '2017-01-01'

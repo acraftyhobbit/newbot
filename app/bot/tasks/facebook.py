@@ -32,4 +32,3 @@ def get_maker_profile(sender_id):
         )
     )
     return sender_id
-

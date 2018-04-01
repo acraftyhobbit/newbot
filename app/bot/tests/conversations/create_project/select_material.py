@@ -1,14 +1,15 @@
 from django.test import TestCase
 
+
 class ValidateSelectMaterialCreateProjectTestCase(TestCase):
     def setUp(self):
         from bot.lib.material import create_material
         from bot.lib.maker import create_maker
         maker, created = create_maker(sender_id='1')
-        material = create_material(sender_id=maker.sender_id, url="testing.com/image", file_type='image')
-        material_2 = create_material(sender_id=maker.sender_id, url='testing.com/image_2', file_type='image')
+        material = create_material(sender_id=maker.sender_id, url="http://via.placeholder.com/350x150", file_type='image')
+        material_2 = create_material(sender_id=maker.sender_id, url='http://via.placeholder.com/350x150', file_type='image')
         self.material = material
-    
+
     def test_empty_message(self):
         from bot.conversations.create_project.select_material import validate
         valid, message = validate(

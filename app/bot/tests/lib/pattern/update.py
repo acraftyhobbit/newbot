@@ -7,7 +7,7 @@ class UpdatePatternTestCase(TestCase):
         from bot.lib.pattern import create_pattern
         self.sender_id = '1'
         create_maker(sender_id=self.sender_id)
-        self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
+        self.pattern_url = 'http://via.placeholder.com/350x150'
         self.pattern_type = 'image'
         self.tags = ['1', '2', '3']
 
@@ -29,7 +29,7 @@ class UpdatePatternTestCase(TestCase):
             sender_id=self.sender_id,
             pattern_id=self.pattern_id,
             file=dict(
-                url='http://craftybot.com/test_pattern_image_2.jpg',
+                url='http://via.placeholder.com/350x350',
                 file_type=self.pattern_type
             )
         )

@@ -4,9 +4,10 @@ from __future__ import unicode_literals
 
 from django.db import migrations
 
+
 def forwards_func(apps, schema_editor):
     from bot.lib.conversation import create_conversation, create_conversation_stage
-    
+
     conversations = dict(
         menu=['menu'],
         create_supplies=['add_context', 'add_image'],
@@ -18,11 +19,12 @@ def forwards_func(apps, schema_editor):
         for stage in stages:
             create_conversation_stage(conversation_name=name, stage_name=stage)
 
+
 def reverse_func(apps, schema_editor):
     pass
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ('bot', '0004_project_finished'),
     ]

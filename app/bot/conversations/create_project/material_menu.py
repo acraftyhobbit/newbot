@@ -1,5 +1,4 @@
 def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
-    from bot.lib.project import create_project
     from bot.models import Material
     from bot.lib.maker import get_maker_id
     from .utilities import format_supply_carousel, send_materials
@@ -54,19 +53,21 @@ def validate(sender_id, message_text, attachment_type, postback, quick_reply):
 
     if quick_reply and quick_reply.lower() in ['add_material', 'select_material']:
         return True, dict()
-    elif message_text and ('add' in message_text.lower() or 'select' in message_text.lower()) and 'material' in message_text.lower():
+    elif message_text and (
+            'add' in message_text.lower() or 'select' in message_text.lower()) and 'material' in message_text.lower():
         return True, dict()
     else:
-        return False, dict(message_text="I'm sorry, did you want to add a new material or select an existing one?", quick_replies=[
-                {
-                    "content_type":"text",
-                    "title":"New Material",
-                    "payload":"ADD_MATERIAL",
-                },
-                {
-                    "content_type":"text",
-                    "title":"Select Material",
-                    "payload":"SELECT_MATERIAL",
-                },
-            ]
-    )
+        return False, dict(message_text="I'm sorry, did you want to add a new material or select an existing one?",
+                           quick_replies=[
+                               {
+                                   "content_type": "text",
+                                   "title": "New Material",
+                                   "payload": "ADD_MATERIAL",
+                               },
+                               {
+                                   "content_type": "text",
+                                   "title": "Select Material",
+                                   "payload": "SELECT_MATERIAL",
+                               },
+                           ]
+                           )

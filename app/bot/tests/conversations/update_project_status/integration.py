@@ -1,30 +1,30 @@
 from django.test import TestCase
 
+
 class UpdateProjectTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
         from bot.lib.pattern import create_pattern
         from bot.lib.material import create_material
-        from bot.tasks import route_message
         from bot.lib.project import create_project, update_project
-        
+
         self.sender_id = '108886223055545'
         create_maker(sender_id=self.sender_id)
         project, created = create_project(sender_id=self.sender_id, name='Test_project')
-        self.pattern = create_pattern(sender_id=self.sender_id, url='http://acraftybot.com/pattern_image.jpg',file_type='image')
+        self.pattern = create_pattern(sender_id=self.sender_id, url='http://via.placeholder.com/350x150',
+                                      file_type='image')
         self.material = create_material(
-            sender_id=self.sender_id, url='http://acraftybot.com/material_image.jpg', file_type='image')
+            sender_id=self.sender_id, url='http://via.placeholder.com/350x150', file_type='image')
 
-        
-        update_project(sender_id=self.sender_id, project_id=str(project.id), material_id = str(self.material.id), pattern_id=str(self.pattern.id), date_string='2300-10-30')
+        update_project(sender_id=self.sender_id, project_id=str(project.id), material_id=str(self.material.id),
+                       pattern_id=str(self.pattern.id), date_string='2300-10-30')
         self.project = project
         project_2, created = create_project(sender_id=self.sender_id, name='Test_project_2')
 
     def test_project_selection(self):
         from bot.tasks import route_message
         from bot.models import Maker
-        from bot.lib.conversation import get_conversation_stage_id
-        
+
         route_message(
             sender_id=self.sender_id,
             message_text=None,
@@ -47,9 +47,9 @@ class UpdateProjectTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_1.jpg'
+            attachment_url='http://via.placeholder.com/350x150'
         )
-        
+
         route_message(
             sender_id=self.sender_id,
             message_text="25",
@@ -60,10 +60,7 @@ class UpdateProjectTestCase(TestCase):
         )
         maker = Maker.objects.get(sender_id=self.sender_id)
         project = maker.projects.filter(id=self.project.id)
-        self.assertEqual(maker.project_statuses.count(),1)
+        self.assertEqual(maker.project_statuses.count(), 1)
         self.assertTrue(maker.project_statuses.first().complete)
         self.assertFalse(maker.project_statuses.first().project.finished)
-        self.assertEqual(project.first().statuses.first(),maker.project_statuses.first())
-        
-
-    
+        self.assertEqual(project.first().statuses.first(), maker.project_statuses.first())
