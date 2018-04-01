@@ -1,14 +1,15 @@
 from django.test import TestCase
 
+
 class ValidatePatternCreateProjectTestCase(TestCase):
     def setUp(self):
         from bot.lib.pattern import create_pattern
         from bot.lib.maker import create_maker
         maker, created = create_maker(sender_id='1')
-        pattern = create_pattern(sender_id=maker.sender_id, url="testing.com/image", file_type='image')
-        pattern_2 = create_pattern(sender_id=maker.sender_id, url='testing.com/image_2', file_type='image')
+        pattern = create_pattern(sender_id=maker.sender_id, url="http://via.placeholder.com/350x150", file_type='image')
+        pattern_2 = create_pattern(sender_id=maker.sender_id, url='http://via.placeholder.com/350x150', file_type='image')
         self.pattern = pattern
-    
+
     def test_empty_message(self):
         from bot.conversations.create_project.select_pattern import validate
         valid, message = validate(

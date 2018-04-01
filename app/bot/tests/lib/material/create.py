@@ -6,7 +6,7 @@ class CreateMaterialTestCase(TestCase):
         from bot.lib.maker import create_maker
         self.sender_id = '1'
         create_maker(sender_id=self.sender_id)
-        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_url = 'http://via.placeholder.com/350x150'
         self.material_type = 'image'
 
     def test_create_new_material(self):

@@ -9,21 +9,21 @@ class UpdateProjectStatusTestCase(TestCase):
         from bot.lib.pattern import create_pattern
         from bot.lib.project_status import create_project_status
         self.sender_id = '1'
-        self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
+        self.pattern_url = 'http://via.placeholder.com/350x150'
         self.pattern_type = 'image'
-        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_url = 'http://via.placeholder.com/350x350'
         self.material_type = 'image'
         self.project_name = 'test_project'
         self.due_date = '2017-01-01'
         self.tags = ['1', '2', '3']
-        self.update_url = 'http://craftybot.com/test_status_image.jpg'
+        self.update_url = 'http://via.placeholder.com/350x550'
         self.update_type = 'image'
         create_maker(sender_id=self.sender_id)
         project, created = create_project(sender_id=self.sender_id, name=self.project_name)
         self.project = project
         self.material = create_material(sender_id=self.sender_id, url=self.material_url, file_type=self.material_type)
         self.pattern = create_pattern(sender_id=self.sender_id, url=self.pattern_url, file_type=self.pattern_type)
-        self.update_url_2 = 'http://craftybot.com/test_status_image_2.jpg'
+        self.update_url_2 = 'http://via.placeholder.com/350x650'
         update_project(
             sender_id=self.sender_id,
             project_id=str(self.project.id),

@@ -9,14 +9,14 @@ class CreateProjectStatusTestCase(TestCase):
         from bot.lib.pattern import create_pattern
 
         self.sender_id = '1'
-        self.pattern_url = 'http://craftybot.com/test_pattern_image.jpg'
+        self.pattern_url = 'http://via.placeholder.com/350x150'
         self.pattern_type = 'image'
-        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_url = 'http://via.placeholder.com/350x150'
         self.material_type = 'image'
         self.project_name = 'test_project'
         self.due_date = '2017-01-01'
         self.tags = ['1', '2', '3']
-        self.update_url = 'http://craftybot.com/test_status_image.jpg'
+        self.update_url = 'http://via.placeholder.com/350x150'
         self.update_type = 'image'
         create_maker(sender_id=self.sender_id)
         project, created = create_project(sender_id=self.sender_id, name=self.project_name)

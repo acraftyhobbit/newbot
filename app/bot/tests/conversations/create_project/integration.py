@@ -1,11 +1,11 @@
 from django.test import TestCase, RequestFactory
 
-#TODO select a existing pattern/material and due date
+
+# TODO select a existing pattern/material and due date
 
 class NewProjectTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
-        from bot.tasks import route_message
         self.factory = RequestFactory()
         self.sender_id = '108886223055545'
         create_maker(sender_id=self.sender_id)
@@ -13,7 +13,6 @@ class NewProjectTestCase(TestCase):
     def test_create_project(self):
         from bot.tasks import route_message
         from bot.models import Maker
-        from bot.lib.conversation import get_conversation_stage_id
         from bot.views import post_date
         # Test Create Project selection from persistent Menu
         route_message(
@@ -49,7 +48,7 @@ class NewProjectTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_1.jpg'
+            attachment_url='http://via.placeholder.com/350x150'
         )
         # Select add  material
         route_message(
@@ -67,13 +66,13 @@ class NewProjectTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_2.jpg'
+            attachment_url='http://via.placeholder.com/350x350'
         )
-        
+
         request = self.factory.post('bot/post_date', data=dict(sender_id=self.sender_id, date='2200-10-30'))
-        r=post_date(request)
+        r = post_date(request)
         self.assertEqual(r.status_code, 200)
-        
+
         route_message(
             sender_id=self.sender_id,
             message_text="#pug #dogs",

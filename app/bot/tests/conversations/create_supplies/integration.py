@@ -1,9 +1,9 @@
 from django.test import TestCase
 
+
 class CreateSuppliesTestCase(TestCase):
     def setUp(self):
         from bot.lib.maker import create_maker
-        from bot.tasks import route_message
         self.sender_id = '108886223055545'
         create_maker(sender_id=self.sender_id)
 
@@ -25,7 +25,7 @@ class CreateSuppliesTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_1.jpg'
+            attachment_url='http://via.placeholder.com/350x150'
         )
         route_message(
             sender_id=self.sender_id,
@@ -33,7 +33,7 @@ class CreateSuppliesTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_2.jpg'
+            attachment_url='http://via.placeholder.com/350x350'
         )
         route_message(
             sender_id=self.sender_id,
@@ -70,7 +70,7 @@ class CreateSuppliesTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_1.jpg'
+            attachment_url='http://via.placeholder.com/350x150'
         )
         route_message(
             sender_id=self.sender_id,
@@ -78,7 +78,7 @@ class CreateSuppliesTestCase(TestCase):
             quick_reply=None,
             postback=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/image_2.jpg'
+            attachment_url='http://via.placeholder.com/350x350'
         )
         route_message(
             sender_id=self.sender_id,
@@ -96,4 +96,3 @@ class CreateSuppliesTestCase(TestCase):
             maker.conversation_stage_id,
             get_conversation_stage_id(conversation_name='menu', stage_name='menu')
         )
-

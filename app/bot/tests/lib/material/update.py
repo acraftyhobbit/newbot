@@ -7,7 +7,7 @@ class UpdateMaterialTestCase(TestCase):
         from bot.lib.material import create_material
         self.sender_id = '1'
         create_maker(sender_id=self.sender_id)
-        self.material_url = 'http://craftybot.com/test_material_image.jpg'
+        self.material_url = 'http://via.placeholder.com/350x150'
         self.material_type = 'image'
         self.tags = ['1', '2', '3']
 
@@ -29,7 +29,7 @@ class UpdateMaterialTestCase(TestCase):
             sender_id=self.sender_id,
             material_id=self.material_id,
             file=dict(
-                url='http://craftybot.com/test_material_image_2.jpg',
+                url='http://via.placeholder.com/350x350',
                 file_type=self.material_type
             )
         )

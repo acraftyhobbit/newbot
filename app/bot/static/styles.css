@@ -1,46 +1,46 @@
- .select-button {
-     background-color: #006eff;
-     color: white;
-     text-align: center;
-     border: 1px solid rgb(23, 53, 151);
- }
+.select-button {
+    background-color: #006eff;
+    color: white;
+    text-align: center;
+    border: 1px solid rgb(23, 53, 151);
+}
 
- body {
-     width: 0px;
-     padding: 0px;
-     margin: 0px;
-     background-color: rgb(199, 197, 197);
- }
+body {
+    width: 0px;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(199, 197, 197);
+}
 
- .panel {
-     width: 300px;
-     border: 1px solid rgb(239, 238, 241);
-     box-shadow: 3px 3px 2px #888888;
-     padding: 25px;
-     margin: 25px;
-     border-radius: 10px;
-     background-color: rgb(252, 248, 244);
- }
+.panel {
+    width: 300px;
+    border: 1px solid rgb(239, 238, 241);
+    box-shadow: 3px 3px 2px #888888;
+    padding: 25px;
+    margin: 25px;
+    border-radius: 10px;
+    background-color: rgb(252, 248, 244);
+}
 
- .heading {
-     text-align: center;
-     color: #006eff;
-     padding: 0px;
-     margin: 0px;
- }
+.heading {
+    text-align: center;
+    color: #006eff;
+    padding: 0px;
+    margin: 0px;
+}
 
- p {
-     text-align: center;
-     color: gray;
- }
+p {
+    text-align: center;
+    color: gray;
+}
 
- .image {
-     display: block;
-     margin: 0 auto;
- }
+.image {
+    display: block;
+    margin: 0 auto;
+}
 
- img {
-     border: 1px solid rgb(78, 78, 78);
-     max-width: 250px;
-     max-height: 250px;
- }
+img {
+    border: 1px solid rgb(78, 78, 78);
+    max-width: 250px;
+    max-height: 250px;
+}
