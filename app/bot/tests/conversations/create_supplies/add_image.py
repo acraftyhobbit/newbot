@@ -14,7 +14,7 @@ class AddImageSuppliesConversationTestCase(TestCase):
         response, new_context, conversation = add_image.respond(
             sender_id=self.sender_id, message_text=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/test_url_add_image.jpg',
+            attachment_url='http://via.placeholder.com/350x150',
             postback=None,
             quick_reply=None,
             context=context
@@ -29,7 +29,7 @@ class AddImageSuppliesConversationTestCase(TestCase):
         response, new_context, conversation = add_image.respond(
             sender_id=self.sender_id, message_text=None,
             attachment_type='image',
-            attachment_url='http://craftybot.com/test_url_add_image.jpg',
+            attachment_url='http://via.placeholder.com/350x150',
             postback=None,
             quick_reply=None,
             context=context

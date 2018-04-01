@@ -26,7 +26,7 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     else:
         supply = update_pattern(sender_id=sender_id, pattern_id=context['pattern_id'], file=file, tags=tags)
 
-    new_context = {'type':context['type'], '{0}_id'.format(context['type']) : str(supply.id)}
+    new_context = {'type': context['type'], '{0}_id'.format(context['type']): str(supply.id)}
 
     response = dict(message_text="You're all done! Head back to the menu to continue.")
     conversation = dict(name='menu', stage='menu')
@@ -44,7 +44,7 @@ def validate(sender_id, message_text, attachment_type, postback, quick_reply):
     :param str quick_reply: an automatic (optional, defaults to None)
 
     :returns: Booleen and a dict with message text if the message is not valid """
-    
+
     if message_text:
         return True, dict()
     else:

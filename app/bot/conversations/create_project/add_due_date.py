@@ -45,4 +45,5 @@ def validate(sender_id, message_text, attachment_type, postback, quick_reply):
         if date > datetime.now():
             return True, dict()
         else:
-            return False, dict(message_text='Woah a time traveler. Seriously though, when do you want to finish this... in the future.')
+            return False, dict(
+                message_text='Woah a time traveler. Seriously though, when do you want to finish this... in the future.')

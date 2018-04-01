@@ -27,7 +27,6 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     return response, new_context, conversation
 
 
-
 def validate(sender_id, message_text, attachment_type, postback, quick_reply):
     """Takes in ``postback``= postback of supply id
     and determines if the message type is valid.
@@ -44,4 +43,4 @@ def validate(sender_id, message_text, attachment_type, postback, quick_reply):
         return True, dict(message_text='')
     else:
         return False, dict(message_text='Please select from the menu.')
-    #TODO probably need to see what happen with other things here
+        # TODO probably need to see what happen with other things here

@@ -13,12 +13,13 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 import boto3
-
+from celery.utils.log import get_task_logger
 from app.keys import *
 
+TASK_LOGGER = get_task_logger(__name__)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+TEMP_FILE_PATH = os.path.join(BASE_DIR, '../files/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -114,4 +115,4 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_STORAGE_BUCKET_NAME = 'craftybot'
 AWS_LOCATION = 'static/'
 STATIC_URL = '/static/'
-S3 = boto3.client('s3')
+S3 = boto3.resource('s3')

@@ -1,5 +1,4 @@
 def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
-    from bot.lib.project import update_project
     """Takes in ``sender_id``, ``postback``= project id,
      ``context`` = empty dict and updates project and sends a reponse.
 
@@ -15,11 +14,10 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     ``new_context`` dict project id, and ``coverstation`` dict containing
     the next stage and task for the the bot
     """
-    
 
-    new_context = dict(project_id = postback)
+    new_context = dict(project_id=postback)
     conversation = dict(name='update_project_status', stage='add_image')
-    response = dict(message_text = "Great! Take or upload a image to update your progress")
+    response = dict(message_text="Great! Take or upload a image to update your progress")
     return response, new_context, conversation
 
 

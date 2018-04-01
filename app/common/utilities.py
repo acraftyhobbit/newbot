@@ -24,10 +24,22 @@ def create_unique_hash(attributes):
 
 
 def get_file_url(file):
-    from common.file_management.s3 import get_bucket
+    from app.settings import BUCKETS
     if file.downloaded:
         key = '{0}.jpg'.format(str(file.id).replace('-', '/'))
-        bucket, key = get_bucket(key=key)
+        bucket = BUCKETS['default']
         return 'https://s3.amazonaws.com/{0}/{1}'.format(bucket, key)
     else:
         return file.url
+
+
+def store_obj_on_s3(obj, key):
+    from app.settings import S3, TASK_LOGGER, BUCKETS
+    from botocore.exceptions import ClientError
+    try:
+        S3.Object(BUCKETS['default'], key).put(Body=obj)
+        success = True
+    except ClientError:
+        TASK_LOGGER.error('file upload failed')
+        success = False
+    return success

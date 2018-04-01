@@ -1,10 +1,11 @@
 from celery import shared_task
 
+
 @shared_task()
 def route_message(sender_id, message_text, quick_reply, postback, attachment_url, attachment_type):
     """Routes messages to New User setup, ongoing conversation, and handles menu conversation interrupts"""
 
-    if isinstance(postback, str) and postback.upper() in["ADD_PROJECT_PAYLOAD", "UPDATE_PROJECT_PAYLOAD",
+    if isinstance(postback, str) and postback.upper() in ["ADD_PROJECT_PAYLOAD", "UPDATE_PROJECT_PAYLOAD",
                                                           "ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         process_menu_selection(sender_id, postback)
     elif isinstance(postback, str) and postback.upper() == "START":
@@ -74,8 +75,6 @@ def process_message(sender_id, message_text, quick_reply, postback, attachment_u
             attachment=response.get('attachment'),
             quick_replies=response.get('quick_replies')
         )
-        print('Finished')
-        print(r.content)
         # Sets the next stage of the conversation and persists and conversation context.
         update_maker(sender_id=sender_id, context=context, conversation=next_conversation)
     return valid
@@ -98,12 +97,13 @@ def process_menu_selection(sender_id, postback):
         if projects.count() == 6:
             message_text = "Sorry it looks like you have max out your new project. You need to finish something before you can add anything new"
         else:
-            message_text = "Great! What would you like to call this project?"        
+            message_text = "Great! What would you like to call this project?"
 
     elif postback == "UPDATE_PROJECT_PAYLOAD":
         conversation = dict(name="update_project_status", stage="project_selection")
-        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(finished=True)
-        
+        projects = Project.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).filter(complete=True).exclude(
+            finished=True)
+
         if projects.count() == 0:
             message_text = "It looks like you don't have any active projects. Add a project to get started!"
             conversation = dict(name="menu", stage="menu")
@@ -111,7 +111,7 @@ def process_menu_selection(sender_id, postback):
             attachment = format_project_carousel(projects=projects)
         elif projects.count() > 2:
             attachment = send_update_project(sender_id=sender_id)
-        
+
     elif postback in ["ADD_PATTERN_PAYLOAD", "ADD_MATERIAL_PAYLOAD"]:
         conversation = dict(name="create_supplies", stage="add_image")
         context = dict(type=postback.split("_")[1].lower())
@@ -155,8 +155,8 @@ def format_project_carousel(projects):
     carousel = {
         "type": "template",
         "payload": {
-                "template_type": "generic",
-                "elements": []
+            "template_type": "generic",
+            "elements": []
         }
     }
     for project in projects[0:10]:

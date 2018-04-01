@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 class ValidateMaterialMenuCreateProjectTestCase(TestCase):
     def test_empty_message(self):
         from bot.conversations.create_project.material_menu import validate
@@ -44,4 +45,3 @@ class ValidateMaterialMenuCreateProjectTestCase(TestCase):
             quick_reply='select_material'
         )
         self.assertTrue(valid)
-

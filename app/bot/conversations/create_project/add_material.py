@@ -1,7 +1,4 @@
 def respond(sender_id, message_text, attachment_type, attachment_url, postback, quick_reply, context):
-    from bot.lib.material import create_material
-    from bot.lib.project import update_project
-    from .utilities import send_date_picker
     """Takes in ``sender_id``, ``attachment_type``= photo,``attachment_url``= url,
      ``context`` = project id and updates project and sends a reponse.
 
@@ -17,6 +14,9 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
     ``new_context`` same context as before, and ``coverstation`` dict containing
     the next stage and task for the the bot
     """
+    from bot.lib.material import create_material
+    from bot.lib.project import update_project
+    from .utilities import send_date_picker
 
     material = create_material(sender_id=sender_id, url=attachment_url, file_type=attachment_type)
     update_project(sender_id=sender_id, project_id=context["project_id"], material_id=str(material.id))

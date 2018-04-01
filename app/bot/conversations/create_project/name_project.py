@@ -20,16 +20,16 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
 
     project, created = create_project(sender_id=sender_id, name=message_text)
     new_context = dict()
-    
+
     if created:
         new_context = dict(project_id=str(project.id))
         response = dict(
-            message_text = "That's a great name. So what are you making?", 
+            message_text="That's a great name. So what are you making?",
             quick_replies=[
                 {
-                    "content_type":"text",
-                    "title":"New Pattern",
-                    "payload":"ADD_PATTERN",
+                    "content_type": "text",
+                    "title": "New Pattern",
+                    "payload": "ADD_PATTERN",
                 }])
         if Pattern.objects.filter(maker_id=get_maker_id(sender_id=sender_id)).count() > 0:
             response['quick_replies'].append(
@@ -41,7 +41,9 @@ def respond(sender_id, message_text, attachment_type, attachment_url, postback, 
             )
         conversation = dict(name='create_project', stage='pattern_menu')
     else:
-        response = dict(message_text = "It looks like you already have a project called {0}. What would you like to call this project?".format(message_text))
+        response = dict(
+            message_text="It looks like you already have a project called {0}. What would you like to call this project?".format(
+                message_text))
         conversation = dict(name='create_project', stage='name_project')
     return response, new_context, conversation
 

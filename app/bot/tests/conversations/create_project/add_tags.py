@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 class ValidateAddtagsCreateProjectTestCase(TestCase):
     def test_empty_message(self):
         from bot.conversations.create_supplies.add_context import validate
@@ -33,4 +34,3 @@ class ValidateAddtagsCreateProjectTestCase(TestCase):
             quick_reply=None
         )
         self.assertTrue(valid)
-

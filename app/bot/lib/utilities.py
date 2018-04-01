@@ -8,7 +8,7 @@ def create_file(url, file_type):
 
     file, new = File.objects.get_or_create(id=file_id, defaults=dict(type_id=file_type_id, url=url))
     if new and file_type == 'image':
-        download_file.delay(url=url)
+        download_file(url=url)
 
     return file
 

@@ -9,7 +9,8 @@ def forwards_func(apps, schema_editor):
     from bot.lib.conversation import create_conversation, create_conversation_stage
 
     conversations = dict(
-        create_project=['name_project','pattern_menu', 'add_pattern', 'select_pattern', 'material_menu', 'add_material','select_material','add_due_date','add_tags'],
+        create_project=['name_project', 'pattern_menu', 'add_pattern', 'select_pattern', 'material_menu',
+                        'add_material', 'select_material', 'add_due_date', 'add_tags'],
         create_supplies=['add_tags'],
     )
     for name, stages in conversations.items():
@@ -21,8 +22,8 @@ def forwards_func(apps, schema_editor):
 def reverse_func(apps, schema_editor):
     pass
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ('bot', '0005_auto_20171019_0251'),
     ]

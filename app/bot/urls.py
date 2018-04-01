@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import facebook, add_date, post_date, health_check, update_project, post_project, select_supply, post_supply
+from .views import facebook, add_date, post_date, update_project, post_project, select_supply, post_supply
 
 """URL routing for views.py"""
 
