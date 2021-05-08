@@ -16,7 +16,7 @@ Django==1.11.6
 django-storages==1.6.5
 docutils==0.14
 enum34==1.1.6
-eventlet==0.22.0
+eventlet==0.31.0
 greenlet==0.4.12
 gunicorn==19.7.1
 idna==2.6
