@@ -36,6 +36,6 @@ requests==2.18.4
 rsa==3.4.2
 s3transfer==0.1.11
 six==1.11.0
-urllib3==1.22
+urllib3==1.26.5
 vine==1.1.4
 yarl==0.14.0
